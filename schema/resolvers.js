@@ -10,17 +10,16 @@ const resolvers = {
     async getBoard(root, { id }, { models }) {
       return await models.Board.findByPk(id);
     },
+    async getAllBoards(root, args, { models }) {
+      return models.Board.findAll();
+    },
     async getTask(root, { id }, { models, req }) {
       return models.Task.findByPk(id);
     },
     async getAllTasks(root, args, { models }) {
       return models.Tasks.findAll();
     },
-    async hello(root) {
-      return "Hello mister Aidar";
-    },
-    async me(root, _, { models, req }) {
-      console.log(req);
+    async me(_, __, { models, req }) {
       return models.User.findAll();
     },
   },
@@ -29,27 +28,27 @@ const resolvers = {
       return models.User.create({ name, email, password });
     },
 
-    async createBoard(root, { UserId, title }, { models }) {
-      return models.Board.create({ UserId, title });
+    async createBoard(root, { userId, title }, { models }) {
+      return models.Board.create({ userId, title });
     },
 
-    async createTask(root, { BoardId, title }, { models }) {
-      return models.Task.create({ BoardId, title });
+    async createTask(root, { boardId, title }, { models }) {
+      return models.Task.create({ boardId, title });
     },
   },
   User: {
-    async Board(Board) {
-      return Board.getBoard();
+    async board(board) {
+      return board.getBoard();
     },
   },
   Board: {
-    async User(User) {
-      return User.getUser();
+    async user(user) {
+      return user.getUser();
     },
   },
   Task: {
-    async Task(Task) {
-      return Task.getTask();
+    async board(board) {
+      return board.getBoard();
     },
   },
 };

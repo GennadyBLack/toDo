@@ -1,9 +1,10 @@
 {
-  "name": "toDo",
+  "name": "12321313231sdfsfsdf",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

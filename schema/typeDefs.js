@@ -4,12 +4,13 @@ const typeDefs = gql`
     id: Int!
     email: String!
     password: String!
-    boards: [Board!]!
+    board: [Board!]!
   }
   type Board {
     id: Int!
     title: String!
     user: User!
+    task: [Task!]!
   }
   type Task {
     id: Int!
@@ -18,18 +19,18 @@ const typeDefs = gql`
   }
   type Query {
     hello: String
-    me: [Student!]
-    getUser(id: Int!): User
+    me: [User!]
+    getUser(id: Int!): User!
     getAllUsers: [User!]!
     getBoard(id: Int!): Board!
     getAllBoards: [Board!]!
-    getTask(id: Int!): Task
+    getTask(id: Int!): Task!
     getAllTasks: [Task!]!
   }
   type Mutation {
     createUser(name: String!, email: String!, password: String!): User!
-    createBoard(userId: String!, title: String!): Board!
-    createTask(boardId: String!, title: String!): Task!
+    createBoard(userId: Int!, title: String!): Board!
+    createTask(boardId: Int!, title: String!): Task!
   }
 `;
 module.exports = typeDefs;
