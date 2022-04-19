@@ -3,6 +3,7 @@
     <nav>
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
+      {{ hello }}-asdas
     </nav>
     <router-view />
   </div>
@@ -18,7 +19,9 @@ export default {
     `,
   },
   data() {
-    hello: "";
+    return {
+      hello: "",
+    };
   },
 };
 </script>

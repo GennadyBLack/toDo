@@ -7,7 +7,6 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-
     static associate(models) {
       // define association here
       Task.belongsTo(models.Board, {
@@ -15,10 +14,11 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-
   Task.init(
     {
       title: { type: DataTypes.STRING },
+      important: { type: DataTypes.BOOLEAN, defaultValue: false },
+      completed: { type: DataTypes.BOOLEAN, defaultValue: false },
     },
     {
       sequelize,

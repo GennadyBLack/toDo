@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      //ОБЯЗАТЕЛЬНО нужно так же прописывать обратную связь в ассоциативной модели !!!! без этого не будет работать графкл!!! { foreignKey: "userId" } так же обязательно
       User.hasMany(models.Board, { foreignKey: "userId" });
     }
   }

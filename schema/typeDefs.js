@@ -16,6 +16,8 @@ const typeDefs = gql`
     id: Int!
     title: String!
     board: Board!
+    important: Boolean!
+    completed: Boolean!
   }
   type Query {
     hello: String
@@ -30,7 +32,12 @@ const typeDefs = gql`
   type Mutation {
     createUser(name: String!, email: String!, password: String!): User!
     createBoard(userId: Int!, title: String!): Board!
-    createTask(boardId: Int!, title: String!): Task!
+    createTask(
+      boardId: Int!
+      title: String!
+      important: Boolean!
+      completed: Boolean!
+    ): Task!
   }
 `;
 module.exports = typeDefs;
