@@ -3,27 +3,33 @@
     <nav>
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
-      {{ hello }}-asdas
+      {{ result }}-asdas
     </nav>
     <router-view />
   </div>
 </template>
-<script>
-import gql from "graphql-tag";
-export default {
-  apollo: {
-    hello: gql`
-      query {
-        hello
-      }
-    `,
-  },
-  data() {
+<script lang="ts">
+import { SEARCH_USERS } from "./graphql/documents";
+import { useQuery, useResult } from "@vue/apollo-composable";
+import { defineComponent, reactive } from "vue";
+export default defineComponent({
+  name: "App",
+
+  setup() {
+    const { result, loading, error } = useQuery(SEARCH_USERS);
+    const repositories = useResult(
+      result,
+      [],
+      (data) => data.search && data.search.edges
+    );
     return {
-      hello: "",
+      result,
+      loading,
+      error,
+      repositories,
     };
   },
-};
+});
 </script>
 <style>
 #app {
