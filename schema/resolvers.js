@@ -36,21 +36,22 @@ const resolvers = {
       return models.Task.create({ boardId, title });
     },
   },
+  //ассоциации, чтобы потом можно было достать
   User: {
-    async board(board) {
-      return board.getBoard();
+    async task(task) {
+      return task.getTask();
     },
   },
-  Board: {
+  Task: {
     async user(user) {
       return user.getUser();
     },
   },
-  Task: {
-    async board(board) {
-      return board.getBoard();
-    },
-  },
+  // Task: {
+  //   async board(board) {
+  //     return board.getBoard();
+  //   },
+  // },
 };
 
 module.exports = resolvers;
