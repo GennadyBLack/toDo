@@ -3,8 +3,10 @@ const typeDefs = gql`
   type User {
     id: Int!
     email: String!
+    name: String!
     password: String!
     task: [Task!]!
+    active: Boolean
   }
   type Task {
     id: Int!
@@ -24,8 +26,12 @@ const typeDefs = gql`
   type Mutation {
     createUser(name: String!, email: String!, password: String!): User!
     createTask(userId: Int!, title: String!,   important: Boolean!, completed: Boolean!): Task!
+    deleteUser(id: Int): String
+    deleteTask(id: Int): Task
   }
 `;
+//deleteUser(id: Int): String - возвращаем тип того, что вернётся при удалении (ответ возвращаем в резолвере, в соотв мутации)
+
 module.exports = typeDefs;
 //определяем схему для запросов
 // type Student {

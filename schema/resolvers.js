@@ -7,12 +7,6 @@ const resolvers = {
     async getAllUsers(root, args, { models }) {
       return models.User.findAll();
     },
-    async getBoard(root, { id }, { models }) {
-      return await models.Board.findByPk(id);
-    },
-    async getAllBoards(root, args, { models }) {
-      return models.Board.findAll();
-    },
     async getTask(root, { id }, { models, req }) {
       return models.Task.findByPk(id);
     },
@@ -27,13 +21,17 @@ const resolvers = {
     async createUser(root, { name, email, password }, { models }) {
       return models.User.create({ name, email, password });
     },
-
-    async createBoard(root, { userId, title }, { models }) {
-      return models.Board.create({ userId, title });
+    async deleteUser(root, { id }, { models }) {
+       models.User.destroy({ where: {id} });
+      return "deleted";
     },
 
-    async createTask(root, { boardId, title }, { models }) {
-      return models.Task.create({ boardId, title });
+    async createTask(root, { userId, title }, { models }) {
+      return models.Task.create({ userId, title });
+    },
+    async deleteTask(root, { id }, { models }) {
+      models.Task.destroy({ where: {id} });
+      return "deleted";
     },
   },
   //ассоциации, чтобы потом можно было достать
