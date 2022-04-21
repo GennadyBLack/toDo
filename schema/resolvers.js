@@ -29,12 +29,15 @@ const resolvers = {
   Mutation: {
     async registerUser(root, { name, email, password }, { models }) {
       bcrypt.hash(password, rounds, (error, hash) => {
-        if (error) res.status(500).json({ error: error });
-        else {
+        if (error) {
+          console.log("error", error);
+          res.status(500).json({ error: error });
+        } else {
+          console.log(hash, "HHHHAAASHHH");
           const newUser = models.User.build({
             name,
             email,
-            password,
+            password: hash,
           });
           newUser
             .save()
@@ -42,9 +45,10 @@ const resolvers = {
               return user;
             })
             .catch((error) => {
-              {
-                error: "cold not create user";
-              }
+              console.log(error);
+              return {
+                error: "cold not create user",
+              };
             });
         }
       });
