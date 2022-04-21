@@ -56,15 +56,18 @@ const resolvers = {
       });
     },
     async loginUser(root, { email, password }, { models }) {
-      await models.User.findOne({ where: { email: email } })
-        .then((user) => {
+      return await models.User.findOne({ where: { email: email } })
+        .then(async (user) => {
           if (!user) return { errors: "no user with that email found" };
           else {
-            bcrypt.compare(password, user.password, (errors, match) => {
-              if (errors) return { error: errors };
-              else if (match) return { token: generateToken(user), user: user };
-              else return { error: "passwords do not match" };
-            });
+            return await new Promise((resolve, reject) =>
+              bcrypt.compare(password, user.password, (errors, match) => {
+                if (errors) return { error: errors };
+                else if (match)
+                  resolve({ token: generateToken(user), user: user });
+                else reject({ error: "passwords do not match" });
+              })
+            );
           }
         })
         .catch((error) => {
