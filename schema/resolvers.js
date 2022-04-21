@@ -56,7 +56,7 @@ const resolvers = {
             return newUser
               .save()
               .then((user) => {
-                resolve(user);
+                resolve({ token: generateToken(user), user: user });
               })
               .catch((error) => {
                 console.log(error);
