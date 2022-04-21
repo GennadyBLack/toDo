@@ -28,29 +28,31 @@ const resolvers = {
   },
   Mutation: {
     async registerUser(root, { name, email, password }, { models }) {
-      bcrypt.hash(password, rounds, (error, hash) => {
-        if (error) {
-          console.log("error", error);
-          res.status(500).json({ error: error });
-        } else {
-          console.log(hash, "HHHHAAASHHH");
-          const newUser = models.User.build({
-            name,
-            email,
-            password: hash,
-          });
-          newUser
-            .save()
-            .then((user) => {
-              return user;
-            })
-            .catch((error) => {
-              console.log(error);
-              return {
-                error: "cold not create user",
-              };
+      //используем промис, для того, чтобы через резолв вернуть юзера (ч/з обычный ретурн не работает)
+      return await new Promise((resolve, reject) => {
+        bcrypt.hash(password, rounds, async (error, hash) => {
+          if (error) {
+            console.log("error", error);
+            res.status(500).json({ error: error });
+          } else {
+            const newUser = await models.User.build({
+              name,
+              email,
+              password: hash,
             });
-        }
+            return newUser
+              .save()
+              .then((user) => {
+                resolve(user);
+              })
+              .catch((error) => {
+                console.log(error);
+                return {
+                  error: "cold not create user",
+                };
+              });
+          }
+        });
       });
     },
     async loginUser(root, { email, password }, { models }) {
