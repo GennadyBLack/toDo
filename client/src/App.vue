@@ -1,37 +1,30 @@
-<script lang="ts">
-import { SEARCH_USERS } from "./graphql/documents";
-import { useQuery, useResult } from "@vue/apollo-composable";
-import { defineComponent, reactive } from "vue";
-export default defineComponent({
-  name: "App",
-
-  setup() {
-    const { result, loading, error } = useQuery(SEARCH_USERS);
-    const repositories = useResult(
-      result,
-      [],
-      (data) => data.search && data.search.edges
-    );
-    return {
-      result,
-      loading,
-      error,
-      repositories,
-    };
-  },
-});
-</script>
-
 <template>
   <div>
     <nav>
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
-      {{ result }}-asdas
     </nav>
     <router-view />
+    <br />
+    {{ profile.value.me.name }}
   </div>
 </template>
+
+<script>
+import { setCurrentUser, profile, test } from "./store/me";
+import { ME_QUERY } from "./graphql/documents";
+import { useQuery, useResult } from "@vue/apollo-composable";
+import { defineComponent, reactive } from "vue";
+export default defineComponent({
+  name: "App",
+  setup() {
+    setCurrentUser();
+    return {
+      profile,
+    };
+  },
+});
+</script>
 
 <style>
 #app {

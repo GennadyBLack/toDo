@@ -18,5 +18,5 @@ export interface UserTs{
     name:string
     email:string
     password:string
-    board:[BoardTs]
+    task:[TaskTs]
 }
