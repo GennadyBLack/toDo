@@ -5,15 +5,13 @@
       <router-link to="/about">About</router-link>
     </nav>
     <router-view />
-    <br />
     {{ profile.value.me.name }}
   </div>
 </template>
 
 <script>
 import { setCurrentUser, profile, test } from "./store/me";
-import { ME_QUERY } from "./graphql/documents";
-import { useQuery, useResult } from "@vue/apollo-composable";
+
 import { defineComponent, reactive } from "vue";
 export default defineComponent({
   name: "App",
