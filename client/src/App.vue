@@ -29,6 +29,11 @@ export default defineComponent({
       <router-link to="/about">About</router-link>
       {{ result }}-asdas
     </nav>
+    <div>
+      HAHAHAH
+      <q-input :model-value="result"></q-input>
+    </div>
+
     <router-view />
   </div>
 </template>
