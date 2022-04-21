@@ -1,4 +1,14 @@
+import App from "./App.vue";
+import router from "./router";
+import { Quasar } from "quasar";
+import quasarUserOptions from "./quasar-user-options";
 
+///old
+// import { createApp } from 'vue'
+// import App from './App.vue'
+// import router from './router'
+
+// createApp(App).use(router).mount('#app')
 
 import { createApp, h, provide } from "vue";
 import {
@@ -9,9 +19,6 @@ import {
   HttpLink,
 } from "@apollo/client/core";
 import { ApolloClients } from "@vue/apollo-composable";
-import App from "./App.vue";
-// import { Quasar } from "quasar";
-// import quasarUserOptions from "./quasar-user-options";
 
 const token = process.env.VUE_APP_GITHUB_ACCESS_TOKEN;
 
@@ -42,4 +49,9 @@ const app = createApp({
   render: () => h(App),
 });
 
-app.mount("#app");
+//new
+
+app
+  .use(Quasar, { ...quasarUserOptions })
+  .use(router)
+  .mount("#app");
