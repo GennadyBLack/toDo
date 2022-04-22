@@ -20,7 +20,7 @@ const resolvers = {
       return models.Task.findByPk(id);
     },
     async getAllTasks(root, args, { models }) {
-      return models.Tasks.findAll();
+      return models.Task.findAll();
     },
     async me(_, __, { models, req }) {
       // const token = req.get("Authorization");
