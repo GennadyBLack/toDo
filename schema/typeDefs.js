@@ -15,8 +15,6 @@ const typeDefs = gql`
     id: Int!
     title: String!
     user: User!
-    important: Boolean!
-    completed: Boolean!
   }
   type Query {
     hello: String
@@ -30,12 +28,7 @@ const typeDefs = gql`
     loginUser(email: String!, password: String!): AuthData!
     registerUser(name: String!, email: String!, password: String!): AuthData!
     createUser(name: String!, email: String!, password: String!): User!
-    createTask(
-      userId: Int!
-      title: String!
-      important: Boolean!
-      completed: Boolean!
-    ): Task!
+    createTask(userId: Int!, title: String!): Task!
     deleteUser(id: Int): String
     deleteTask(id: Int): Task
   }

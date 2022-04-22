@@ -95,8 +95,12 @@ const resolvers = {
       return "deleted";
     },
 
-    async createTask(root, { userId, title }, { models }) {
-      return models.Task.create({ userId, title });
+    async createTask(
+      root,
+      { userId, title, important, completed },
+      { models }
+    ) {
+      return models.Task.create({ userId, title, important, completed });
     },
     async deleteTask(root, { id }, { models }) {
       models.Task.destroy({ where: { id } });
