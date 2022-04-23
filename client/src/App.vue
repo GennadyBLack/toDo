@@ -1,13 +1,12 @@
 <template>
   <div class="container">
-    <!--    <router-link :to="{ name: 'Test' }"> test </router-link>-->
-    <!--    <h4>{{ profile?.value?.me?.name || "" }}</h4>-->
-    <!--    <h4>{{ todos }}</h4>-->
+    <router-link :to="{ name: 'Register' }"> Register form </router-link>
+    <router-link :to="{ name: 'Login' }"> Login form </router-link>
 
-    <!--    <div v-ripple>Click Me</div>-->
     <button @click="loh({ email: 'test2@test.ru', password: 'tester' })">
       СУПЕРЛОХ
     </button>
+    <router-view />
   </div>
 </template>
 <script>
