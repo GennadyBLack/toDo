@@ -23,6 +23,7 @@ const typeDefs = gql`
     getAllUsers: [User!]!
     getTask(id: Int!): Task!
     getAllTasks: [Task!]!
+    getTasksByUser(userId: Int!): [Task!]!
   }
   type Mutation {
     loginUser(email: String!, password: String!): AuthData!

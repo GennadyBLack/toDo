@@ -22,6 +22,9 @@ const resolvers = {
     async getAllTasks(root, args, { models }) {
       return models.Task.findAll();
     },
+    async getTasksByUser(root, { userId }, { models }) {
+      return models.Task.findAll({ where: { userId } });
+    },
     async me(_, __, { models, req }) {
       // const token = req.get("Authorization");
       //По идее это объект с нашим юзером, только захешированный в строку

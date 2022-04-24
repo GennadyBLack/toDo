@@ -11,6 +11,8 @@ import { useMutation } from "@vue/apollo-composable";
 import { ref } from "vue";
 import { defineComponent } from "vue";
 import { gql } from "@apollo/client/core";
+import { useRouter } from "vue-router";
+
 interface LoginForm {
   email: string;
   password: string;
@@ -18,6 +20,7 @@ interface LoginForm {
 
 export default defineComponent({
   setup() {
+    const router = useRouter();
     let form = ref<LoginForm>({ email: "", password: "" });
     const { mutate: login, onDone } = useMutation(
       gql`
@@ -41,6 +44,10 @@ export default defineComponent({
       let token = result?.data?.loginUser?.token;
       console.log(result?.data?.loginUser);
       localStorage.setItem("token", token);
+      router.replace({
+        name: "TodoList",
+        params: { id: result?.data?.loginUser?.user?.id },
+      });
     });
     return { form, login };
   },
