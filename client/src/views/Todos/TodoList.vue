@@ -24,26 +24,22 @@ export default defineComponent({
     const taskTitle = ref<string>("");
     const important = ref<boolean>(false);
     const userId = ref<number>(+route?.params?.id);
-    const tasks = ref(getTasks());
 
-    function getTasks() {
-      const { result } = useQuery(
-        //В квери переменные передаются в соотв. с доками:
-        // В названии квери определяем переменную и её тип,
-        // т.к. мы вызываем резолвер и переменная у нас передается аргументом, кидаем её туда
-        // Если непонятно, всегда можно скопировать запрос из клиента аполло
-        gql`
-          query GetTodos($userId: Int!) {
-            getTasksByUser(userId: $userId) {
-              id
-              title
-            }
+    const { result: tasks, refetch } = useQuery(
+      //В квери переменные передаются в соотв. с доками:
+      // В названии квери определяем переменную и её тип,
+      // т.к. мы вызываем резолвер и переменная у нас передается аргументом, кидаем её туда
+      // Если непонятно, всегда можно скопировать запрос из клиента аполло
+      gql`
+        query GetTodos($userId: Int!) {
+          getTasksByUser(userId: $userId) {
+            id
+            title
           }
-        `,
-        { userId: userId }
-      );
-      return result;
-    }
+        }
+      `,
+      { userId: userId }
+    );
 
     const { mutate: createTask, onDone } = useMutation(
       //в gql описываем поля, которые нужно вернуть
@@ -76,7 +72,8 @@ export default defineComponent({
       })
     );
     onDone(() => {
-      getTasks();
+      taskTitle.value = "";
+      refetch();
     });
 
     return { tasks, taskTitle, route, important, createTask };
