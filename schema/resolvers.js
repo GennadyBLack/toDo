@@ -25,11 +25,11 @@ const resolvers = {
     async getTasksByUser(root, { userId }, { models }) {
       return models.Task.findAll({ where: { userId } });
     },
-    async me(_, __, { models, req }) {
+    async me(_, __, { models, req, token }) {
+      console.log(token);
       // const token = req.get("Authorization");
       //По идее это объект с нашим юзером, только захешированный в строку
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo5LCJuYW1lIjoidGVzdGVyQm95OCIsImVtYWlsIjoidGVzdDhAdGVzdC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRPZTBoYU1aSzFjV2thMEM3YjhVTksubU4uVjlUdmxlVjFhQXNmekJTdlRUT2ZXSGdsd1RYZSIsImNyZWF0ZWRBdCI6IjIwMjItMDQtMjFUMDU6MzI6NDAuOTQwWiIsInVwZGF0ZWRBdCI6IjIwMjItMDQtMjFUMDU6MzI6NDAuOTQwWiJ9LCJpYXQiOjE2NTA1MTk1NzgsImV4cCI6MTY1MDYwNTk3OH0.KtJnJV9OshhH0CvOU_YLcq7Uq849wH7YZsd5xHngXR8";
+
       try {
         if (token) {
           console.log(jwt.verify(token, tokenSecret).data);

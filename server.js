@@ -3,6 +3,7 @@ const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
 const app = express();
 const port = 4000;
+const generateToken = require("./helpers/auth");
 
 const corsConfig = {
   credentials: true,
@@ -26,7 +27,9 @@ async function startServer() {
     typeDefs,
     resolvers,
     context: ({ req }) => {
-      return { models, req };
+      let token = req.headers.authorization.split(" ")[1];
+      req.user = generateToken(token);
+      return { models, req, token };
     },
   });
   //стартуем
