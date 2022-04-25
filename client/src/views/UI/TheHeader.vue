@@ -8,13 +8,22 @@
       </q-toolbar-title>
       <q-separator dark vertical />
       <q-btn
+        v-if="!profile?.value?.me?.id"
         stretch
         flat
         label="Register form"
         @click="router.replace({ name: 'Register' })"
       ></q-btn>
+      <q-btn
+        v-if="profile?.value?.me?.id"
+        stretch
+        flat
+        label="Logout"
+        @click="logout"
+      ></q-btn>
       <q-separator dark vertical />
       <q-btn
+        v-if="!profile?.value?.me?.id"
         stretch
         flat
         label="Login form"
@@ -26,6 +35,7 @@
 </template>
 
 <script>
+import { profile, logout } from "@/store/me";
 // TODO: хранение id
 // TODO: условное отображение регистрации/логина/ссылки на туду
 // TODO: имя юзера в хедере
@@ -36,6 +46,8 @@ export default {
     const router = useRouter();
     return {
       router,
+      profile,
+      logout,
     };
   },
 };

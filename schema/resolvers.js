@@ -2,6 +2,7 @@
 const bcrypt = require("bcrypt");
 const rounds = 10;
 const jwt = require("jsonwebtoken");
+const { isConstructorDeclaration } = require("typescript");
 const tokenSecret = "my-token-secret";
 
 function generateToken(user) {
@@ -19,11 +20,23 @@ const resolvers = {
     async getTask(root, { id }, { models, req }) {
       return models.Task.findByPk(id);
     },
-    async getAllTasks(root, args, { models }) {
-      return models.Task.findAll();
+    async getAllTasks(root, args, { models, req }) {
+      try {
+        if (req.user) {
+          let tasks = await models.Task.findAll({
+            where: { userId: req.user.id },
+          });
+          console.log(tasks, "tasks");
+          return tasks;
+        } else {
+          throw new Error("please verify");
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
-    async getTasksByUser(root, { userId }, { models }) {
-      return models.Task.findAll({ where: { userId } });
+    async getTasksByUser(root, __, { models, req }) {
+      return models.Task.findAll({ where: { userId: req.user.id } });
     },
     async me(_, __, { models, req }) {
       try {
@@ -42,7 +55,7 @@ const resolvers = {
         bcrypt.hash(password, rounds, async (error, hash) => {
           if (error) {
             console.log("error", error);
-            res.status(500).json({ error: error });
+            throw new Error(error);
           } else {
             const newUser = await models.User.build({
               name,
@@ -93,10 +106,18 @@ const resolvers = {
 
     async createTask(
       root,
-      { userId, title, important, completed },
-      { models }
+      { title, important = false, completed = false },
+      { models, req }
     ) {
-      return models.Task.create({ userId, title, important, completed });
+      let userId = req.user.id;
+
+      console.log(userId, "userId");
+      return await models.Task.create({
+        userId,
+        title,
+        important,
+        completed,
+      });
     },
     async deleteTask(root, { id }, { models }) {
       models.Task.destroy({ where: { id } });

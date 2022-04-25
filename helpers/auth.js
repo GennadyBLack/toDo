@@ -6,9 +6,15 @@ function generateToken(user) {
 }
 
 function checkToken(token) {
-  return jwt.verify(token, tokenSecret, (err, value) => {
-    if (err) res.status(500).json({ error: "failed to authenticate token" });
-    return value.data;
-  });
+  try {
+    return jwt.verify(token, tokenSecret, (err, value) => {
+      if (err) throw new Error("failed to authenticate token");
+      else {
+        return value.data;
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 module.exports = { generateToken, checkToken };
