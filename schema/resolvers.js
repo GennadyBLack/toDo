@@ -20,7 +20,10 @@ const resolvers = {
       return models.Task.findByPk(id);
     },
     async getAllTasks(root, args, { models }) {
-      return models.Tasks.findAll();
+      return models.Task.findAll();
+    },
+    async getTasksByUser(root, { userId }, { models }) {
+      return models.Task.findAll({ where: { userId } });
     },
     async me(_, __, { models, req }) {
       // const token = req.get("Authorization");
@@ -95,8 +98,12 @@ const resolvers = {
       return "deleted";
     },
 
-    async createTask(root, { userId, title }, { models }) {
-      return models.Task.create({ userId, title });
+    async createTask(
+      root,
+      { userId, title, important, completed },
+      { models }
+    ) {
+      return models.Task.create({ userId, title, important, completed });
     },
     async deleteTask(root, { id }, { models }) {
       models.Task.destroy({ where: { id } });

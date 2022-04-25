@@ -15,8 +15,6 @@ const typeDefs = gql`
     id: Int!
     title: String!
     user: User!
-    important: Boolean!
-    completed: Boolean!
   }
   type Query {
     hello: String
@@ -25,6 +23,7 @@ const typeDefs = gql`
     getAllUsers: [User!]!
     getTask(id: Int!): Task!
     getAllTasks: [Task!]!
+    getTasksByUser(userId: Int!): [Task!]!
   }
   type Mutation {
     loginUser(email: String!, password: String!): AuthData!
@@ -33,8 +32,8 @@ const typeDefs = gql`
     createTask(
       userId: Int!
       title: String!
-      important: Boolean!
-      completed: Boolean!
+      important: Boolean
+      completed: Boolean
     ): Task!
     deleteUser(id: Int): String
     deleteTask(id: Int): Task

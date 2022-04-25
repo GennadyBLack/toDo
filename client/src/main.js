@@ -20,7 +20,7 @@ import {
 } from "@apollo/client/core";
 import { ApolloClients } from "@vue/apollo-composable";
 
-const token = process.env.VUE_APP_GITHUB_ACCESS_TOKEN;
+const token = localStorage.getItem("token");
 
 const additiveLink = from([
   new ApolloLink((operation, forward) => {
