@@ -1,9 +1,20 @@
 <template>
-  <div>
-    <div class="bg-light">{{ form }}</div>
-    <input type="text" v-model="form.email" />
-    <input type="text" v-model="form.password" />
-    <button @click="login">register</button>
+  <div clas="row auth-form bg-teal-3">
+    <div class="q-pa-md" style="max-width: 400px">
+      <q-input
+        standout="bg-teal text-white"
+        v-model="form.email"
+        label="Please,text Email"
+      ></q-input>
+      <q-input
+        standout="bg-teal text-white"
+        v-model="form.password"
+        label="Please,text Password"
+      ></q-input>
+      <q-btn color="secondary" label="Secondary" @click="login" class="q-m-t-xl"
+        >Login</q-btn
+      >
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -11,6 +22,8 @@ import { useMutation } from "@vue/apollo-composable";
 import { ref } from "vue";
 import { defineComponent } from "vue";
 import { gql } from "@apollo/client/core";
+import { useRouter } from "vue-router";
+
 interface LoginForm {
   email: string;
   password: string;
@@ -18,6 +31,7 @@ interface LoginForm {
 
 export default defineComponent({
   setup() {
+    const router = useRouter();
     let form = ref<LoginForm>({ email: "", password: "" });
     const { mutate: login, onDone } = useMutation(
       gql`
@@ -41,8 +55,13 @@ export default defineComponent({
       let token = result?.data?.loginUser?.token;
       console.log(result?.data?.loginUser);
       localStorage.setItem("token", token);
+      router.replace({
+        name: "TodoList",
+        params: { id: result?.data?.loginUser?.user?.id },
+      });
     });
     return { form, login };
   },
 });
 </script>
+<style lang="scss"></style>

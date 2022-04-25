@@ -1,10 +1,27 @@
 <template>
   <div>
-    <div class="bg-light">{{ form }}</div>
-    <input type="text" v-model="form.email" />
-    <input type="text" v-model="form.password" />
-    <input type="text" v-model="form.name" />
-    <button @click="register({ ...form })">register</button>
+    <q-input
+      standout="bg-teal text-white"
+      v-model="form.name"
+      label="Please,text Email"
+    ></q-input>
+    <q-input
+      standout="bg-teal text-white"
+      v-model="form.email"
+      label="Please,text Email"
+    ></q-input>
+    <q-input
+      standout="bg-teal text-white"
+      v-model="form.password"
+      label="Please,text Email"
+    ></q-input>
+    <q-btn
+      color="secondary"
+      label="Secondary"
+      @click="register"
+      class="q-m-t-xl"
+      >Register</q-btn
+    >
   </div>
 </template>
 <script lang="ts">

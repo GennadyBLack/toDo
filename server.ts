@@ -17,7 +17,6 @@ const resolvers = require("./schema/resolvers");
 const models = require("./models");
 //проверяем удалось ли подсключиться к базе данных пострес
 models.sequelize.authenticate().then(async()=>{
-  console.log('LLLOOOOOG')
   await models.sequelize.sync({logging:console.log,force:true});
 });
 //создаем таблицы, {force:true} для удаления всех таблиц

@@ -43,6 +43,15 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Auth/Login.vue"),
   },
+  {
+    path: "/todos/:id",
+    name: "TodoList",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+        import(/* webpackChunkName: "about" */ "../views/Todos/TodoList"),
+  },
 ];
 
 const router = createRouter({
