@@ -1,9 +1,20 @@
 <template>
-  <div>
-    <div class="bg-light">{{ form }}</div>
-    <input type="text" v-model="form.email" />
-    <input type="text" v-model="form.password" />
-    <button @click="login">register</button>
+  <div clas="row auth-form bg-teal-3">
+    <div class="q-pa-md" style="max-width: 400px">
+      <q-input
+        standout="bg-teal text-white"
+        v-model="form.email"
+        label="Please,text Email"
+      ></q-input>
+      <q-input
+        standout="bg-teal text-white"
+        v-model="form.password"
+        label="Please,text Password"
+      ></q-input>
+      <q-btn color="secondary" label="Secondary" @click="login" class="q-m-t-xl"
+        >Login</q-btn
+      >
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -53,3 +64,4 @@ export default defineComponent({
   },
 });
 </script>
+<style lang="scss"></style>
