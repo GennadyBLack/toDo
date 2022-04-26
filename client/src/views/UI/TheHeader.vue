@@ -2,10 +2,21 @@
   <q-header elevated class="bg-primary text-white">
     <q-toolbar>
       <q-toolbar-title>
-        <q-avatar>
+        <q-avatar class="q-mr-md">
           <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
         </q-avatar>
+        <span v-if="profile?.value?.me?.name"
+          >Hello, {{ profile?.value?.me?.name }}</span
+        >
       </q-toolbar-title>
+      <q-separator dark vertical />
+      <q-btn
+        v-if="profile?.value?.me?.id"
+        stretch
+        flat
+        label="My TodoList"
+        @click="router.replace({ name: 'TodoList' })"
+      ></q-btn>
       <q-separator dark vertical />
       <q-btn
         v-if="!profile?.value?.me?.id"

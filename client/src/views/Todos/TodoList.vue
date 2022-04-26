@@ -52,7 +52,7 @@ export default defineComponent({
       console.log(obj);
       updateTask({ ...obj });
     }
-    const { mutate: updateTask } = useMutation(
+    const { mutate: updateTask, onDone: onUpdated } = useMutation(
       //в gql описываем поля, которые нужно вернуть
       gql`
         mutation updateTask(
@@ -73,6 +73,11 @@ export default defineComponent({
         }
       `
     );
+    onUpdated(() => {
+      $q.notify("Task was successfuly updated");
+      refetch();
+    });
+
     const { result: tasks, refetch } = useQuery(
       //В квери переменные передаются в соотв. с доками:
       // В названии квери определяем переменную и её тип,
