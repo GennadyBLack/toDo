@@ -35,9 +35,9 @@ const resolvers = {
         console.log(error);
       }
     },
-    async getTasksByUser(root, __, { models, req }) {
-      return models.Task.findAll({ where: { userId: req.user.id } });
-    },
+    // async getTasksByUser(root, __, { models, req }) {
+    //   return models.Task.findAll({ where: { userId: req.user.id } });
+    // },
     async me(_, __, { models, req }) {
       try {
         if (req?.user) {
@@ -118,6 +118,23 @@ const resolvers = {
         important,
         completed,
       });
+    },
+
+    async updateTask(
+      root,
+      { id, title, important = false, completed = false },
+      { models }
+    ) {
+      try {
+        //Сначала находим объект, потом апдейтим. Т.к. иначе update вернёт только кол-во изменённых строк
+        const res = await models.Task.findByPk(id).then((task) =>
+          task.update({ title, important, completed })
+        );
+        console.log(res);
+        return res;
+      } catch (e) {
+        throw new Error(e);
+      }
     },
     async deleteTask(root, { id }, { models }) {
       models.Task.destroy({ where: { id } });

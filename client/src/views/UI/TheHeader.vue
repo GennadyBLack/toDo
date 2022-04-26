@@ -36,9 +36,7 @@
 
 <script>
 import { profile, logout } from "@/store/me";
-// TODO: хранение id
-// TODO: условное отображение регистрации/логина/ссылки на туду
-// TODO: имя юзера в хедере
+
 import { useRouter } from "vue-router";
 export default {
   name: "TheHeader",

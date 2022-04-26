@@ -14,37 +14,23 @@
       @click.prevent="createTask"
     ></q-btn>
     <q-separator spaced></q-separator>
-    <TaskItem :task="tasks.getAllTasks[0]" />
-    <Fragment v-if="tasks?.getAllTasks">
-      <q-item
-        class="bg-cyan"
-        tag="label"
-        v-ripple
-        v-for="task in tasks.getAllTasks"
+    <Fragment v-if="allTasks">
+      <TaskItem
+        v-for="task in allTasks"
         :key="task.id"
-      >
-        <q-item-section side top> </q-item-section>
-
-        <q-item-section>
-          <q-item-label> {{ task?.title }}</q-item-label>
-          <q-item-label caption>
-            <q-checkbox v-model="task.completed"></q-checkbox>
-            <q-checkbox v-model="task.important"></q-checkbox>
-            <q-btn class="glossy" round color="red" icon="delete"></q-btn>
-          </q-item-label>
-          {{ task.completed }}
-        </q-item-section>
-      </q-item>
+        :task="task"
+        @update="update"
+      />
     </Fragment>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import { gql } from "@apollo/client/core";
 import { useQuasar } from "quasar";
-import TaskItem from "../../components/TaskItem";
+import TaskItem from "../../components/TaskItem.vue";
 
 interface TaskModel {
   title: string | number;
@@ -53,6 +39,7 @@ interface TaskModel {
 }
 
 export default defineComponent({
+  components: { TaskItem },
   setup() {
     const $q = useQuasar();
     let taskForm = ref<TaskModel>({
@@ -61,6 +48,31 @@ export default defineComponent({
       completed: false,
     });
 
+    function update(obj: any) {
+      console.log(obj);
+      updateTask({ ...obj });
+    }
+    const { mutate: updateTask } = useMutation(
+      //в gql описываем поля, которые нужно вернуть
+      gql`
+        mutation updateTask(
+          $id: Int!
+          $title: String
+          $important: Boolean
+          $completed: Boolean
+        ) {
+          updateTask(
+            id: $id
+            title: $title
+            important: $important
+            completed: $completed
+          ) {
+            id
+            title
+          }
+        }
+      `
+    );
     const { result: tasks, refetch } = useQuery(
       //В квери переменные передаются в соотв. с доками:
       // В названии квери определяем переменную и её тип,
@@ -77,6 +89,7 @@ export default defineComponent({
         }
       `
     );
+    const allTasks = computed(() => tasks?.value?.getAllTasks);
 
     const { mutate: createTask, onDone } = useMutation(
       //в gql описываем поля, которые нужно вернуть
@@ -109,7 +122,7 @@ export default defineComponent({
       refetch();
     });
 
-    return { tasks, createTask, taskForm };
+    return { tasks, createTask, taskForm, allTasks, update, updateTask };
   },
 });
 </script>

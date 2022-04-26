@@ -1,19 +1,19 @@
 <template>
-  <div>
+  <div class="q-pa-md" style="max-width: 400px">
     <q-input
       standout="bg-teal text-white"
       v-model="form.name"
-      label="Please,text Email"
+      label="Name"
     ></q-input>
     <q-input
       standout="bg-teal text-white"
       v-model="form.email"
-      label="Please,text Email"
+      label="Email"
     ></q-input>
     <q-input
       standout="bg-teal text-white"
       v-model="form.password"
-      label="Please,text Email"
+      label="Password"
     ></q-input>
     <q-btn
       color="secondary"

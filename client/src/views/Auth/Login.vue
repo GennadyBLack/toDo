@@ -4,12 +4,12 @@
       <q-input
         standout="bg-teal text-white"
         v-model="form.email"
-        label="Please,text Email"
+        label="Email"
       ></q-input>
       <q-input
         standout="bg-teal text-white"
         v-model="form.password"
-        label="Please,text Password"
+        label="Password"
       ></q-input>
       <q-btn color="secondary" label="Secondary" @click="login" class="q-m-t-xl"
         >Login</q-btn
