@@ -2,6 +2,7 @@
 const bcrypt = require("bcrypt");
 const rounds = 10;
 const jwt = require("jsonwebtoken");
+const { isConstructorDeclaration } = require("typescript");
 const tokenSecret = "my-token-secret";
 
 function generateToken(user) {
@@ -19,26 +20,31 @@ const resolvers = {
     async getTask(root, { id }, { models, req }) {
       return models.Task.findByPk(id);
     },
-    async getAllTasks(root, args, { models }) {
-      return models.Task.findAll();
+    async getAllTasks(root, args, { models, req }) {
+      try {
+        if (req.user) {
+          let tasks = await models.Task.findAll({
+            where: { userId: req.user.id },
+          });
+          console.log(tasks, "tasks");
+          return tasks;
+        } else {
+          throw new Error("please verify");
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
-    async getTasksByUser(root, { userId }, { models }) {
-      return models.Task.findAll({ where: { userId } });
+    async getTasksByUser(root, __, { models, req }) {
+      return models.Task.findAll({ where: { userId: req.user.id } });
     },
     async me(_, __, { models, req }) {
-      // const token = req.get("Authorization");
-      //По идее это объект с нашим юзером, только захешированный в строку
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo5LCJuYW1lIjoidGVzdGVyQm95OCIsImVtYWlsIjoidGVzdDhAdGVzdC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRPZTBoYU1aSzFjV2thMEM3YjhVTksubU4uVjlUdmxlVjFhQXNmekJTdlRUT2ZXSGdsd1RYZSIsImNyZWF0ZWRBdCI6IjIwMjItMDQtMjFUMDU6MzI6NDAuOTQwWiIsInVwZGF0ZWRBdCI6IjIwMjItMDQtMjFUMDU6MzI6NDAuOTQwWiJ9LCJpYXQiOjE2NTA1MTk1NzgsImV4cCI6MTY1MDYwNTk3OH0.KtJnJV9OshhH0CvOU_YLcq7Uq849wH7YZsd5xHngXR8";
       try {
-        if (token) {
-          console.log(jwt.verify(token, tokenSecret).data);
-          //на выходе снова получаем объект с юзером
-          return jwt.verify(token, tokenSecret).data;
+        if (req?.user) {
+          return req.user;
         }
-        // return req.user;
       } catch (error) {
-        return null;
+        return error;
       }
     },
   },
@@ -49,7 +55,7 @@ const resolvers = {
         bcrypt.hash(password, rounds, async (error, hash) => {
           if (error) {
             console.log("error", error);
-            res.status(500).json({ error: error });
+            throw new Error(error);
           } else {
             const newUser = await models.User.build({
               name,
@@ -100,10 +106,18 @@ const resolvers = {
 
     async createTask(
       root,
-      { userId, title, important, completed },
-      { models }
+      { title, important = false, completed = false },
+      { models, req }
     ) {
-      return models.Task.create({ userId, title, important, completed });
+      let userId = req.user.id;
+
+      console.log(userId, "userId");
+      return await models.Task.create({
+        userId,
+        title,
+        important,
+        completed,
+      });
     },
     async deleteTask(root, { id }, { models }) {
       models.Task.destroy({ where: { id } });

@@ -3,6 +3,7 @@ const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
 const app = express();
 const port = 4000;
+const authHelper = require("./helpers/auth");
 
 const corsConfig = {
   credentials: true,
@@ -26,6 +27,14 @@ async function startServer() {
     typeDefs,
     resolvers,
     context: ({ req }) => {
+      try {
+        let token = req?.headers?.authorization?.split(" ")[1];
+        let user = authHelper.checkToken(token);
+        req.user = user ?? null;
+      } catch (error) {
+        console.log(error);
+      }
+
       return { models, req };
     },
   });

@@ -8,5 +8,9 @@ export const setCurrentUser = () => {
   let { result } = useQuery(ME_QUERY);
   profile.value = result;
 };
+export const logout = () => {
+  profile.value = null;
+  localStorage.setItem("token", null);
+};
 
 export const test = computed(() => profile?.value);
