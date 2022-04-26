@@ -7,10 +7,12 @@ const typeDefs = gql`
     password: String!
     task: [Task!]!
   }
+
   type AuthData {
     token: String!
     user: User!
   }
+
   type Task {
     id: Int!
     title: String!
@@ -18,14 +20,29 @@ const typeDefs = gql`
     important: Boolean
     completed: Boolean
   }
+
+  input Where {
+    field: String
+    value: String
+    type: String
+    operator: String
+  }
+
+  input Filters {
+    where: Where
+    limit: Int
+    page: Int
+  }
+
   type Query {
     hello: String
     me: User!
     getUser(id: Int!): User!
     getAllUsers: [User!]!
     getTask(id: Int!): Task!
-    getAllTasks: [Task!]!
+    getAllTasks(filter: Filters): [Task!]!
   }
+
   type Mutation {
     loginUser(email: String!, password: String!): AuthData!
     registerUser(name: String!, email: String!, password: String!): AuthData!

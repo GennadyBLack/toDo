@@ -7,6 +7,14 @@ const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config/config.json")[env];
 const db = {};
 
+// const operatorsAliases = {
+//   eq: Op.eq,
+//   ne: Op.ne,
+//   gte: Op.gte,
+//   gt: Op.gt,
+//   lte: Op.lte,
+//   lt: Op.lt,
+// }
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
