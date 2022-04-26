@@ -14,6 +14,7 @@
       @click.prevent="createTask"
     ></q-btn>
     <q-separator spaced></q-separator>
+    <TaskItem :task="tasks.getAllTasks[0]" />
     <Fragment v-if="tasks?.getAllTasks">
       <q-item
         class="bg-cyan"
@@ -35,13 +36,6 @@
         </q-item-section>
       </q-item>
     </Fragment>
-
-    <!-- <ul v-if="tasks">
-      <li v-for="task in tasks.getAllTasks" :key="task.id" class="">
-        {{ task.title }}
-      </li>
-    </ul>
-    <h5 v-else>Тасков нет</h5> -->
   </div>
 </template>
 
@@ -50,6 +44,8 @@ import { defineComponent, ref } from "vue";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import { gql } from "@apollo/client/core";
 import { useQuasar } from "quasar";
+import TaskItem from "../../components/TaskItem";
+
 interface TaskModel {
   title: string | number;
   important: boolean;
@@ -70,15 +66,6 @@ export default defineComponent({
       // В названии квери определяем переменную и её тип,
       // т.к. мы вызываем резолвер и переменная у нас передается аргументом, кидаем её туда
       // Если непонятно, всегда можно скопировать запрос из клиента аполло
-      // gql`
-      //   query GetTodos($userId: Int!) {
-      //     getTasksByUser(userId: $userId) {
-      //       id
-      //       title
-      //     }
-      //   }
-      // `,
-      // { userId: userId }
       gql`
         query GetAllTasks {
           getAllTasks {
