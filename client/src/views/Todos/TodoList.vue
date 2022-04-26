@@ -1,5 +1,7 @@
 <template>
-  <div class="main-wrapper q-pa-md">
+  <div
+    class="main-wrapper q-stepper q-stepper--bordered q-stepper__flat no-shadow q-mx-auto q-mt-lg q-px-md q-py-md"
+  >
     <q-input filled v-model="taskForm.title" label="text To Do"></q-input>
     <!-- <input v-model="taskTitle" type="text" /> -->
     <div class="q-pa-md">
@@ -13,7 +15,13 @@
       label="Create"
       @click.prevent="createTask"
     ></q-btn>
+
     <q-separator spaced></q-separator>
+    <q-btn-group class="q-mx-auto q-my-md" push>
+      <q-btn push label="All" icon="timeline" />
+      <q-btn push label="Important" icon="visibility" />
+      <q-btn push label="Completed" icon="update" />
+    </q-btn-group>
     <div v-if="allTasks">
       <TaskItem
         v-for="task in allTasks"
@@ -141,4 +149,8 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.main-wrapper {
+  max-width: 700px;
+}
+</style>

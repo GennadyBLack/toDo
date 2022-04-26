@@ -39,7 +39,10 @@
         flat
         label="Login form"
         @click="router.replace({ name: 'Login' })"
-      ></q-btn>
+      >
+      </q-btn>
+      <q-separator dark vertical />
+      <q-btn stretch flat label="Dark Mode" @click="$q.dark.toggle()"></q-btn>
       <q-separator dark vertical />
     </q-toolbar>
   </q-header>
@@ -47,16 +50,18 @@
 
 <script>
 import { profile, logout } from "@/store/me";
-
+import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 export default {
   name: "TheHeader",
   setup() {
     const router = useRouter();
+    const $q = useQuasar();
     return {
       router,
       profile,
       logout,
+      $q,
     };
   },
 };
