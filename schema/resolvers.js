@@ -23,9 +23,13 @@ const resolvers = {
     async getAllTasks(root, args, { models, req }) {
       try {
         if (req.user) {
+          const filter = args.filter ? args.filter : {};
+          console.log(filter, "FILTTTTTTEEER");
+          filter.where["userId"] = req.user.id;
           let tasks = await models.Task.findAll({
-            where: { userId: req.user.id },
+            ...filter,
           });
+
           console.log(tasks, "tasks");
           return tasks;
         } else {

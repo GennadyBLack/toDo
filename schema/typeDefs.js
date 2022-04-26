@@ -59,6 +59,7 @@ const typeDefs = gql`
     deleteTask(id: Int): String
   }
 `;
+//deleteUser(id: Int) - в скобках название и тип принимаемого резолвером аргумента
 //deleteUser(id: Int): String - возвращаем тип того, что вернётся при удалении (ответ возвращаем в резолвере, в соотв мутации)
 
 module.exports = typeDefs;

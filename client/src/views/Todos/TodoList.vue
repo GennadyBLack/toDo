@@ -1,6 +1,11 @@
 <template>
   <div
-    class="main-wrapper q-stepper q-stepper--bordered q-stepper__flat no-shadow q-mx-auto q-mt-lg q-px-md q-py-md"
+    class="
+      main-wrapper
+      q-stepper q-stepper--bordered q-stepper__flat
+      no-shadow
+      q-mx-auto q-mt-lg q-px-md q-py-md
+    "
   >
     <q-input filled v-model="taskForm.title" label="text To Do"></q-input>
     <!-- <input v-model="taskTitle" type="text" /> -->
@@ -18,9 +23,25 @@
 
     <q-separator spaced></q-separator>
     <q-btn-group class="q-mx-auto q-my-md" push>
-      <q-btn push label="All" icon="timeline" />
-      <q-btn push label="Important" icon="visibility" />
-      <q-btn push label="Completed" icon="update" />
+      <q-btn push label="All" icon="timeline" @click="setFilter({})" />
+      <q-btn
+        push
+        label="Important"
+        icon="visibility"
+        @click="setFilter({ important: true })"
+      />
+      <q-btn
+        push
+        label="Completed"
+        icon="update"
+        @click="setFilter({ completed: true })"
+      />
+      <q-btn
+        push
+        label="Incomplete"
+        icon="update"
+        @click="setFilter({ completed: false })"
+      />
     </q-btn-group>
     <div v-if="allTasks">
       <TaskItem
@@ -51,6 +72,7 @@ export default defineComponent({
   components: { TaskItem },
   setup() {
     const $q = useQuasar();
+    const filterObj = ref({});
     let taskForm = ref<TaskModel>({
       title: "",
       important: false,
@@ -60,6 +82,9 @@ export default defineComponent({
     function update(obj: any) {
       console.log(obj);
       updateTask({ ...obj });
+    }
+    function setFilter(obj: any) {
+      filterObj.value = obj;
     }
     const { mutate: updateTask, onDone: onUpdated } = useMutation(
       //в gql описываем поля, которые нужно вернуть
@@ -93,16 +118,18 @@ export default defineComponent({
       // т.к. мы вызываем резолвер и переменная у нас передается аргументом, кидаем её туда
       // Если непонятно, всегда можно скопировать запрос из клиента аполло
       gql`
-        query GetAllTasks {
-          getAllTasks {
+        query GetAllTasks($filter: Filters) {
+          getAllTasks(filter: $filter) {
             title
             id
             important
             completed
           }
         }
-      `
+      `,
+      () => ({ filter: { where: { ...filterObj.value } } })
     );
+
     const allTasks = computed(() => tasks?.value?.getAllTasks);
 
     const { mutate: createTask, onDone } = useMutation(
@@ -144,6 +171,8 @@ export default defineComponent({
       update,
       updateTask,
       refetch,
+      filterObj,
+      setFilter,
     };
   },
 });
