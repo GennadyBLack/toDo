@@ -22,10 +22,11 @@ const typeDefs = gql`
   }
 
   input Where {
-    field: String
-    value: String
-    type: String
-    operator: String
+    id: Int
+    title: String
+    name: String
+    important: Boolean
+    completed: Boolean
   }
 
   input Filters {
