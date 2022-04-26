@@ -100,7 +100,8 @@ const resolvers = {
       return models.User.create({ name, email, password });
     },
     async deleteUser(root, { id }, { models }) {
-      models.User.destroy({ where: { id } });
+      const res = await models.User.destroy({ where: { id } });
+      console.log(res);
       return "deleted";
     },
 

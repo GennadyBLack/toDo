@@ -14,14 +14,15 @@
       @click.prevent="createTask"
     ></q-btn>
     <q-separator spaced></q-separator>
-    <Fragment v-if="allTasks">
+    <div v-if="allTasks">
       <TaskItem
         v-for="task in allTasks"
         :key="task.id"
         :task="task"
         @update="update"
+        @refetch="refetch"
       />
-    </Fragment>
+    </div>
   </div>
 </template>
 
@@ -127,7 +128,15 @@ export default defineComponent({
       refetch();
     });
 
-    return { tasks, createTask, taskForm, allTasks, update, updateTask };
+    return {
+      tasks,
+      createTask,
+      taskForm,
+      allTasks,
+      update,
+      updateTask,
+      refetch,
+    };
   },
 });
 </script>

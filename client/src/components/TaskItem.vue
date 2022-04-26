@@ -12,7 +12,13 @@
             :model-value="task?.important"
             @update:model-value="update({ important: $event, id: task?.id })"
           ></q-checkbox>
-          <q-btn class="glossy" round color="red" icon="delete"></q-btn>
+          <q-btn
+            class="glossy"
+            round
+            color="red"
+            icon="delete"
+            @click.prevent="deleteTask({ id: task?.id })"
+          ></q-btn>
         </q-item-label>
       </q-item-section>
     </q-item>
@@ -31,7 +37,7 @@ interface TaskModel {
 }
 
 const props = defineProps({ task: Object as () => TaskModel });
-const emit = defineEmits(["update"]);
+const emit = defineEmits(["update", "refetch"]);
 const task = toRef(props, "task");
 console.log(props);
 const $q = useQuasar();
@@ -39,25 +45,22 @@ const $q = useQuasar();
 function update(e: any) {
   emit("update", e);
 }
+function refetch() {
+  emit("refetch");
+}
+
 const { mutate: deleteTask, onDone } = useMutation(
   //в gql описываем поля, которые нужно вернуть
   gql`
-    mutation Mutation($deleteTaskId: Int) {
-      deleteTask(id: $deleteTaskId) {
-        id
-      }
+    mutation deleteTask($id: Int) {
+      deleteTask(id: $id)
     }
-  `,
-  //здесь то, что передаем в резолвер в данном случае
-  () => ({
-    variables: {
-      deleteTaskId: 1,
-    },
-  })
+  `
 );
 
 onDone(() => {
   console.log(deleteTask);
   $q.notify("Task was successfuly deleted");
+  refetch();
 });
 </script>

@@ -38,7 +38,7 @@ const typeDefs = gql`
       completed: Boolean
     ): Task!
     deleteUser(id: Int): String
-    deleteTask(id: Int): Task
+    deleteTask(id: Int): String
   }
 `;
 //deleteUser(id: Int): String - возвращаем тип того, что вернётся при удалении (ответ возвращаем в резолвере, в соотв мутации)
