@@ -57,15 +57,35 @@ interface TaskModel {
   important: boolean;
   completed: boolean;
 }
+interface updateModel {
+  title: string;
+  completed?: boolean;
+  important?: boolean;
+  id: number | string;
+}
+// interface Props {
+//   task: TaskModel
+//   foo?: number
+// }
+// через интерфейс
+// const props = defineProps<Props>()
 
-const props = defineProps({ task: Object as () => TaskModel });
-const emit = defineEmits(["update", "refetch"]);
+//определение пропса через дженерик (минус таких определений, без доп шаманства нельзя добавить дефолтное значение)
+const props = defineProps<{ task: TaskModel }>();
+const emit = defineEmits<{
+  // eslint-disable-next-line no-unused-vars
+  (e: "refetch"): void;
+  // eslint-disable-next-line no-unused-vars
+  (e: "update", payload: updateModel): void;
+}>();
+
+//хз как тут указать тип
 const task = toRef(props, "task");
 console.log(props);
 const $q = useQuasar();
 
-function update(e: any) {
-  emit("update", e);
+function update(payload: updateModel) {
+  emit("update", payload);
 }
 function refetch() {
   emit("refetch");

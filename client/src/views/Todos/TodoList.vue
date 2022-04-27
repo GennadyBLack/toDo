@@ -85,23 +85,41 @@ interface TaskModel {
   important: boolean;
   completed: boolean;
 }
+interface filterObj {
+  where?: {
+    id: number;
+    title: string;
+    name: string;
+    important: boolean;
+    completed: boolean;
+  };
+  limit?: number;
+  page?: number;
+  order?: string;
+}
+interface updateModel {
+  title: string;
+  completed?: boolean;
+  important?: boolean;
+  id: number | string;
+}
 
 export default defineComponent({
   components: { TaskItem },
   setup() {
     const $q = useQuasar();
-    const filterObj = ref({});
+    const filterObj = ref<filterObj>({});
     let taskForm = ref<TaskModel>({
       title: "",
       important: false,
       completed: false,
     });
 
-    function update(obj: any) {
+    function update(obj: updateModel) {
       console.log(obj);
       updateTask({ ...obj });
     }
-    function setFilter(obj: any) {
+    function setFilter(obj: filterObj) {
       filterObj.value = obj;
     }
     const { mutate: updateTask, onDone: onUpdated } = useMutation(
