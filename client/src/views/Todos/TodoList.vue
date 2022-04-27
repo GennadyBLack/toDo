@@ -2,20 +2,43 @@
   <div
     class="main-wrapper q-stepper q-stepper--bordered q-stepper__flat no-shadow q-mx-auto q-mt-lg q-px-md q-py-md"
   >
-    <q-input filled v-model="taskForm.title" label="text To Do"></q-input>
-    <!-- <input v-model="taskTitle" type="text" /> -->
-    <div class="q-pa-md">
-      <q-checkbox v-model="taskForm.important" label="important"></q-checkbox>
+    <q-form @submit="createTask" class="q-gutter-md q-px-sm">
+      <div class="row items-center justify-between">
+        <q-input
+          class="col-12"
+          v-model="taskForm.title"
+          label="text To Do"
+          lazy-rules
+          :rules="[
+            (val) => (val && val.length > 0) || 'Пожалуйста, заполните поле',
+          ]"
+        >
+          <template v-slot:append>
+            <q-btn
+              round
+              size="md"
+              color="primary"
+              class="submit"
+              type="submit"
+              icon="add"
+            ></q-btn>
+          </template>
+        </q-input>
+        <!--        <q-checkbox v-model="taskForm.completed" label="completed"></q-checkbox>-->
 
-      <q-checkbox v-model="taskForm.completed" label="completed"></q-checkbox>
-    </div>
-    <q-btn
-      push
-      color="primary"
-      label="Create"
-      @click.prevent="createTask"
-    ></q-btn>
+        <!-- <input v-model="taskTitle" type="text" /> -->
 
+        <!--        <q-checkbox-->
+        <!--          class="col-2 q-mb-lg column"-->
+        <!--          size="lg"-->
+        <!--          color="teal"-->
+        <!--          v-model="taskForm.important"-->
+        <!--          label="Important"-->
+        <!--        ></q-checkbox>-->
+
+        <!--        <q-checkbox v-model="taskForm.completed" label="completed"></q-checkbox>-->
+      </div>
+    </q-form>
     <q-separator spaced></q-separator>
     <q-btn-group class="q-mx-auto q-my-md" push>
       <q-btn push label="All" icon="timeline" @click="setFilter({})" />
@@ -123,9 +146,9 @@ export default defineComponent({
         }
       `,
       () => ({
-        fetchPolicy: "no-cache",
         filter: { where: { ...filterObj.value } },
-      })
+      }),
+      { fetchPolicy: "no-cache" }
     );
 
     const allTasks = computed(() => tasks?.value?.getAllTasks);

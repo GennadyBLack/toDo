@@ -10,24 +10,38 @@
       ]"
     >
       <q-item-section>
-        <q-item-label> {{ task?.title }}</q-item-label>
-        <q-item-label caption>
-          <q-checkbox
-            :model-value="task?.completed"
-            @update:model-value="update({ completed: $event, id: task?.id })"
-          ></q-checkbox>
-          <q-checkbox
-            :model-value="task?.important"
-            @update:model-value="update({ important: $event, id: task?.id })"
-          ></q-checkbox>
-          <q-btn
-            class="glossy"
-            round
-            color="red"
-            icon="delete"
-            @click.prevent="deleteTask({ id: task?.id })"
-          ></q-btn>
-        </q-item-label>
+        <q-input
+          class="col-12 borderless"
+          :model-value="task?.title"
+          @change="update({ title: $event, id: task?.id })"
+        >
+          <template #after>
+            <q-checkbox
+              class="q-mr-sm"
+              :model-value="task?.completed"
+              checked-icon="task_alt"
+              size="lg"
+              unchecked-icon="task_alt_border"
+              @update:model-value="update({ completed: $event, id: task?.id })"
+            ></q-checkbox>
+            <q-checkbox
+              class="q-mr-sm"
+              :model-value="task?.important"
+              checked-icon="star"
+              size="lg"
+              unchecked-icon="star_border"
+              @update:model-value="update({ important: $event, id: task?.id })"
+            ></q-checkbox>
+            <q-btn
+              class="glossy"
+              round
+              color="red"
+              icon="delete"
+              @click.prevent="deleteTask({ id: task?.id })"
+            ></q-btn>
+          </template>
+        </q-input>
+        <q-item-label caption> </q-item-label>
       </q-item-section>
     </q-item>
   </div>
