@@ -72,6 +72,8 @@ const emit = defineEmits<{
   // eslint-disable-next-line no-unused-vars
   (e: "refetch"): void;
   // eslint-disable-next-line no-unused-vars
+  (e: "reset"): void;
+  // eslint-disable-next-line no-unused-vars
   (e: "update", payload: updateModel): void;
 }>();
 
@@ -99,6 +101,7 @@ const { mutate: deleteTask, onDone } = useMutation(
 onDone(() => {
   console.log(deleteTask);
   $q.notify("Task was successfuly deleted");
+  emit("reset");
   refetch();
 });
 </script>

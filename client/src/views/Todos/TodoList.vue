@@ -5,6 +5,7 @@
     <q-form class="q-gutter-md q-px-sm">
       <div class="row items-center justify-between">
         <q-input
+          ref="mainInput"
           class="col-12 text-subtitle1"
           v-model="taskForm.title"
           label="text To Do"
@@ -21,7 +22,7 @@
               class="submit"
               type="submit"
               icon="add"
-              @click="createTask"
+              @click.prevent="createTask"
             ></q-btn>
           </template>
         </q-input>
@@ -73,6 +74,7 @@
         :task="task"
         @update="update"
         @refetch="refetch"
+        @reset="resetValid"
       />
     </div>
   </div>
@@ -114,6 +116,7 @@ export default defineComponent({
   setup() {
     const $q = useQuasar();
     const filterObj = ref<filterObj>({});
+    const mainInput = ref<any>(null);
     let taskForm = ref<TaskModel>({
       title: "",
       important: false,
@@ -126,6 +129,9 @@ export default defineComponent({
     }
     function setFilter(obj: filterObj) {
       filterObj.value = obj;
+    }
+    function resetValid() {
+      mainInput.value.resetValidation();
     }
     const { mutate: updateTask, onDone: onUpdated } = useMutation(
       //в gql описываем поля, которые нужно вернуть
@@ -217,6 +223,7 @@ export default defineComponent({
       refetch,
       filterObj,
       setFilter,
+      resetValid,
     };
   },
 });
