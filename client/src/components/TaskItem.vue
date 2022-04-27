@@ -1,6 +1,14 @@
 <template>
   <div>
-    <q-item class="bg-orange-4 q-mb-md" tag="label">
+    <q-item
+      class="q-mb-md"
+      tag="label"
+      :class="[
+        `${task?.important && !task?.completed ? 'bg-red-4' : ''}`,
+        `${task?.completed ? 'bg-green-4' : ''}`,
+        `${!task?.completed && !task?.important ? 'bg-grey-4' : ''}`,
+      ]"
+    >
       <q-item-section>
         <q-item-label> {{ task?.title }}</q-item-label>
         <q-item-label caption>

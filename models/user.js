@@ -20,9 +20,6 @@ module.exports = (sequelize, DataTypes) => {
       password: {
         type: DataTypes.STRING,
         allowNull: false,
-        get() {
-          return "__protected field";
-        },
       },
     },
     {

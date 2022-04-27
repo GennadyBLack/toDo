@@ -28,9 +28,9 @@ const resolvers = {
           filter.where["userId"] = req.user.id;
           let tasks = await models.Task.findAll({
             ...filter,
+            order: [["id", "DESC"]],
           });
 
-          console.log(tasks, "tasks");
           return tasks;
         } else {
           throw new Error("please verify");
@@ -82,23 +82,27 @@ const resolvers = {
       });
     },
     async loginUser(root, { email, password }, { models }) {
-      return await models.User.findOne({ where: { email: email } })
+      let pre = await models.User.findOne({ where: { email: email } })
         .then(async (user) => {
+          console.log(user.password, "uuuuseeeeeerheeree");
           if (!user) return { errors: "no user with that email found" };
           else {
             return await new Promise((resolve, reject) =>
               bcrypt.compare(password, user.password, (errors, match) => {
-                if (errors) return { error: errors };
-                else if (match)
+                if (match) {
                   resolve({ token: generateToken(user), user: user });
-                else reject({ error: "passwords do not match" });
+                } else if (errors) {
+                  return { error: errors };
+                } else reject({ error: "passwords do not match" });
               })
             );
           }
         })
         .catch((error) => {
-          return { errors: "no user with that email found" };
+          return error;
         });
+      console.log(pre, "preeeeeeee");
+      return pre;
     },
     async createUser(root, { name, email, password }, { models }) {
       return models.User.create({ name, email, password });
@@ -125,11 +129,7 @@ const resolvers = {
       });
     },
 
-    async updateTask(
-      root,
-      { id, title, important = false, completed = false },
-      { models }
-    ) {
+    async updateTask(root, { id, title, important, completed }, { models }) {
       try {
         //Сначала находим объект, потом апдейтим. Т.к. иначе update вернёт только кол-во изменённых строк
         const res = await models.Task.findByPk(id).then((task) =>

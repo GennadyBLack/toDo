@@ -33,6 +33,7 @@ const typeDefs = gql`
     where: Where
     limit: Int
     page: Int
+    order: String
   }
 
   type Query {

@@ -1,11 +1,6 @@
 <template>
   <div
-    class="
-      main-wrapper
-      q-stepper q-stepper--bordered q-stepper__flat
-      no-shadow
-      q-mx-auto q-mt-lg q-px-md q-py-md
-    "
+    class="main-wrapper q-stepper q-stepper--bordered q-stepper__flat no-shadow q-mx-auto q-mt-lg q-px-md q-py-md"
   >
     <q-input filled v-model="taskForm.title" label="text To Do"></q-input>
     <!-- <input v-model="taskTitle" type="text" /> -->
@@ -127,7 +122,10 @@ export default defineComponent({
           }
         }
       `,
-      () => ({ filter: { where: { ...filterObj.value } } })
+      () => ({
+        fetchPolicy: "no-cache",
+        filter: { where: { ...filterObj.value } },
+      })
     );
 
     const allTasks = computed(() => tasks?.value?.getAllTasks);
