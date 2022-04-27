@@ -2,10 +2,10 @@
   <div
     class="main-wrapper q-stepper q-stepper--bordered q-stepper__flat no-shadow q-mx-auto q-mt-lg q-px-md q-py-md"
   >
-    <q-form @submit="createTask" class="q-gutter-md q-px-sm">
+    <q-form class="q-gutter-md q-px-sm">
       <div class="row items-center justify-between">
         <q-input
-          class="col-12"
+          class="col-12 text-subtitle1"
           v-model="taskForm.title"
           label="text To Do"
           lazy-rules
@@ -21,6 +21,7 @@
               class="submit"
               type="submit"
               icon="add"
+              @click="createTask"
             ></q-btn>
           </template>
         </q-input>
@@ -39,7 +40,11 @@
         <!--        <q-checkbox v-model="taskForm.completed" label="completed"></q-checkbox>-->
       </div>
     </q-form>
-    <q-separator spaced></q-separator>
+  </div>
+  <!--    <q-separator spaced></q-separator>-->
+  <div
+    class="main-wrapper q-stepper q-stepper--bordered q-stepper__flat no-shadow q-mx-auto q-mt-lg q-px-md q-py-md"
+  >
     <q-btn-group class="q-mx-auto q-my-md" push>
       <q-btn push label="All" icon="timeline" @click="setFilter({})" />
       <q-btn

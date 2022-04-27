@@ -1,49 +1,45 @@
 <template>
   <div>
-    <q-item
-      class="q-mb-md"
-      tag="label"
-      :class="[
-        `${task?.important && !task?.completed ? 'bg-red-4' : ''}`,
-        `${task?.completed ? 'bg-green-4' : ''}`,
-        `${!task?.completed && !task?.important ? 'bg-grey-4' : ''}`,
-      ]"
-    >
-      <q-item-section>
-        <q-input
-          class="col-12 borderless"
-          :model-value="task?.title"
-          @change="update({ title: $event, id: task?.id })"
-        >
-          <template #after>
-            <q-checkbox
-              class="q-mr-sm"
-              :model-value="task?.completed"
-              checked-icon="task_alt"
-              size="lg"
-              unchecked-icon="task_alt_border"
-              @update:model-value="update({ completed: $event, id: task?.id })"
-            ></q-checkbox>
-            <q-checkbox
-              class="q-mr-sm"
-              :model-value="task?.important"
-              checked-icon="star"
-              size="lg"
-              unchecked-icon="star_border"
-              @update:model-value="update({ important: $event, id: task?.id })"
-            ></q-checkbox>
-            <q-btn
-              class="glossy"
-              round
-              color="red"
-              icon="delete"
-              @click.prevent="deleteTask({ id: task?.id })"
-            ></q-btn>
-          </template>
-        </q-input>
-        <q-item-label caption> </q-item-label>
-      </q-item-section>
-    </q-item>
+    <q-item-section>
+      <q-input
+        outlined
+        class="col-12 borderless q-mb-md text-h6"
+        :model-value="task?.title"
+        @change="update({ title: $event, id: task?.id })"
+        :class="[
+          `${task?.important && !task?.completed ? 'bg-orange-4' : ''}`,
+          `${task?.completed ? 'bg-green-4' : ''}`,
+          `${!task?.completed && !task?.important ? 'bg-blue-3' : ''}`,
+        ]"
+      >
+        <template #append>
+          <q-checkbox
+            class="q-mr-sm"
+            :model-value="task?.completed"
+            checked-icon="task_alt"
+            size="lg"
+            unchecked-icon="task_alt_border"
+            @update:model-value="update({ completed: $event, id: task?.id })"
+          ></q-checkbox>
+          <q-checkbox
+            class="q-mr-sm"
+            :model-value="task?.important"
+            checked-icon="star"
+            size="lg"
+            unchecked-icon="star_border"
+            @update:model-value="update({ important: $event, id: task?.id })"
+          ></q-checkbox>
+          <q-btn
+            class="glossy"
+            round
+            color="transparent"
+            icon="delete"
+            @click.prevent="deleteTask({ id: task?.id })"
+          ></q-btn>
+        </template>
+      </q-input>
+      <q-item-label caption> </q-item-label>
+    </q-item-section>
   </div>
 </template>
 <script lang="ts" setup>
