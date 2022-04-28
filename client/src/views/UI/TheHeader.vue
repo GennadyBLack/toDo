@@ -38,8 +38,7 @@
         stretch
         flat
         label="Login form"
-        @click="router.replace({ name: 'Login' })"
-      >
+        @click="router.replace({ name: 'Login' })">
       </q-btn>
       <q-separator dark vertical />
       <q-btn stretch flat label="Dark Mode" @click="$q.dark.toggle()"></q-btn>

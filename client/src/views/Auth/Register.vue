@@ -30,9 +30,9 @@ import { ref } from "vue";
 import { defineComponent } from "vue";
 import { gql } from "@apollo/client/core";
 interface RegisterForm {
-  name: string;
-  email: string;
-  password: string;
+  name: string
+  email: string
+  password: string
 }
 
 export default defineComponent({

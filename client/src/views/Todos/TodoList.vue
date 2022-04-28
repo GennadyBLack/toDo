@@ -1,4 +1,5 @@
 <template>
+<div>
   <div
     class="main-wrapper q-stepper q-stepper--bordered q-stepper__flat no-shadow q-mx-auto q-mt-lg q-px-md q-py-md"
   >
@@ -75,6 +76,7 @@
         @refetch="refetch"
       />
     </div>
+  </div>
   </div>
 </template>
 

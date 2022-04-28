@@ -25,8 +25,8 @@ import { gql } from "@apollo/client/core";
 import { useRouter } from "vue-router";
 
 interface LoginForm {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 export default defineComponent({
