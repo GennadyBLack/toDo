@@ -29,9 +29,14 @@ async function startServer() {
     context: ({ req }) => {
       //подмешиваем юзера в каждый запрос, добавив его в контекст аполло
       try {
-        let token = req?.headers?.authorization?.split(" ")[1];
-        let user = authHelper.checkToken(token);
-        req.user = user ?? null;
+        let token = req?.headers?.authorization ? req?.headers?.authorization?.split(" ")[1] : null;
+        let user = null;
+
+        if(token) {
+          console.log(typeof token, "TOKEN")
+          user = authHelper.checkToken(token);
+        }
+        req.user = user;
       } catch (error) {
         console.log(error);
       }

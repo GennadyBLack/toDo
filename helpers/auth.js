@@ -7,6 +7,7 @@ function generateToken(user) {
 
 function checkToken(token) {
   try {
+    console.log(token, "checkToken");
     return jwt.verify(token, tokenSecret, (err, value) => {
       if (err) throw new Error("failed to authenticate token");
       else {
@@ -14,7 +15,7 @@ function checkToken(token) {
       }
     });
   } catch (error) {
-    console.log(error);
+    throw new Error(error);
   }
 }
 module.exports = { generateToken, checkToken };

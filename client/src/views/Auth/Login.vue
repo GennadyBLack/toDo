@@ -1,19 +1,25 @@
 <template>
   <div clas="row auth-form bg-teal-3">
-    <div class="q-pa-md" style="max-width: 400px">
+    <div class="q-pa-md" style="max-width: 400px" data-attr="login-form">
       <q-input
         standout="bg-teal text-white"
         v-model="form.email"
         label="Email"
+        name="Email"
       ></q-input>
       <q-input
         standout="bg-teal text-white"
         v-model="form.password"
         label="Password"
+        name="Password"
       ></q-input>
-      <q-btn color="secondary" label="Secondary" @click="login" class="q-m-t-xl"
-        >Login</q-btn
-      >
+      <q-btn
+        color="secondary"
+        label="Login"
+        type="submit"
+        @click="login"
+        class="q-m-t-xl"
+      ></q-btn>
     </div>
   </div>
 </template>
@@ -23,6 +29,7 @@ import { ref } from "vue";
 import { defineComponent } from "vue";
 import { gql } from "@apollo/client/core";
 import { useRouter } from "vue-router";
+import { setCurrentUser } from "@/store/me.js";
 
 interface LoginForm {
   email: string;
@@ -51,11 +58,12 @@ export default defineComponent({
       })
     );
 
-    onDone((result) => {
+    onDone(async (result) => {
       let token = result?.data?.loginUser?.token;
       console.log(result?.data?.loginUser);
       localStorage.setItem("token", token);
-      router.replace({
+      await setCurrentUser();
+      await router.replace({
         name: "TodoList",
         params: { id: result?.data?.loginUser?.user?.id },
       });

@@ -27,7 +27,7 @@ const additiveLink = from([
     operation.setContext(({ headers = {} }) => ({
       headers: {
         ...headers,
-        authorization: token ? `Bearer ${token}` : null,
+        authorization: token != null ? `Bearer ${token}` : null,
       },
     }));
     return forward(operation); // Go to the next link in the chain. Similar to `next` in Express.js middleware.

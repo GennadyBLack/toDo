@@ -10,7 +10,7 @@ export const ALL_USERS = gql`
 `;
 
 export const ME_QUERY = gql`
-  query Query {
+  query GetMe {
     me {
       email
       name

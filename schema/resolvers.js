@@ -25,7 +25,7 @@ const resolvers = {
         if (req.user) {
           const filter = args.filter ? args.filter : {};
           console.log(filter, "FILTTTTTTEEER");
-          filter.where["userId"] = req.user.id;
+          filter.where["userId"] = req?.user?.id ? req.user.id : null;
           let tasks = await models.Task.findAll({
             ...filter,
             order: [["id", "DESC"]],
@@ -82,10 +82,12 @@ const resolvers = {
       });
     },
     async loginUser(root, { email, password }, { models }) {
+      console.log("loginUser");
       let pre = await models.User.findOne({ where: { email: email } })
         .then(async (user) => {
+          console.log("Userlalala");
           console.log(user.password, "uuuuseeeeeerheeree");
-          if (!user) return { errors: "no user with that email found" };
+          if (!user) throw new Error("no user with that email found");
           else {
             return await new Promise((resolve, reject) =>
               bcrypt.compare(password, user.password, (errors, match) => {

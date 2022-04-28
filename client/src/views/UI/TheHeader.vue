@@ -38,6 +38,7 @@
         stretch
         flat
         label="Login form"
+        data-attr="login"
         @click="router.replace({ name: 'Login' })"
       >
       </q-btn>

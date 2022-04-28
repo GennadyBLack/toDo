@@ -3,8 +3,10 @@ import { ME_QUERY } from "@/graphql/documents";
 import { useQuery } from "@vue/apollo-composable";
 export const profile = ref({});
 
-export const setCurrentUser = () => {
-  let { result } = useQuery(ME_QUERY);
+export const setCurrentUser = async () => {
+  console.log("setCurrentUser");
+  let { result } = await useQuery(ME_QUERY);
+  console.log(result, "result");
   profile.value = result;
 };
 export const logout = () => {
