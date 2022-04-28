@@ -1,9 +1,14 @@
 <template>
 <div>
   <div
-    class="main-wrapper q-stepper q-stepper--bordered q-stepper__flat no-shadow q-mx-auto q-mt-lg q-px-md q-py-md"
+    class="
+      main-wrapper
+      q-stepper q-stepper--bordered q-stepper__flat
+      no-shadow
+      q-mx-auto q-mt-lg q-px-md q-py-md
+    "
   >
-    <q-form class="q-gutter-md q-px-sm">
+    <q-form class="q-gutter-md q-px-sm" ref="mainForm">
       <div class="row items-center justify-between">
         <q-input
           class="col-12 text-subtitle1"
@@ -22,7 +27,8 @@
               class="submit"
               type="submit"
               icon="add"
-              @click="createTask"
+              @click.prevent="createTask"
+              @reset="resetValid"
             ></q-btn>
           </template>
         </q-input>
@@ -44,7 +50,12 @@
   </div>
   <!--    <q-separator spaced></q-separator>-->
   <div
-    class="main-wrapper q-stepper q-stepper--bordered q-stepper__flat no-shadow q-mx-auto q-mt-lg q-px-md q-py-md"
+    class="
+      main-wrapper
+      q-stepper q-stepper--bordered q-stepper__flat
+      no-shadow
+      q-mx-auto q-mt-lg q-px-md q-py-md
+    "
   >
     <q-btn-group class="q-mx-auto q-my-md" push>
       <q-btn push label="All" icon="timeline" @click="setFilter({})" />
@@ -116,6 +127,7 @@ export default defineComponent({
   setup() {
     const $q = useQuasar();
     const filterObj = ref<filterObj>({});
+    const mainForm = ref<any>(null);
     let taskForm = ref<TaskModel>({
       title: "",
       important: false,
@@ -128,6 +140,9 @@ export default defineComponent({
     }
     function setFilter(obj: filterObj) {
       filterObj.value = obj;
+    }
+    function resetValid() {
+      mainForm.value.resetValidation();
     }
     const { mutate: updateTask, onDone: onUpdated } = useMutation(
       //в gql описываем поля, которые нужно вернуть
@@ -219,6 +234,7 @@ export default defineComponent({
       refetch,
       filterObj,
       setFilter,
+      resetValid,
     };
   },
 });
