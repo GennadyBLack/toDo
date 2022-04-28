@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { ME_QUERY } from "@/graphql/documents";
 import { useQuery } from "@vue/apollo-composable";
 export const profile = ref({});
@@ -14,4 +14,4 @@ export const logout = () => {
   localStorage.setItem("token", null);
 };
 
-export const test = computed(() => profile?.value);
+// export const test = computed(() => profile?.value);

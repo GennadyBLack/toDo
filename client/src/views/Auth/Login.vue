@@ -32,8 +32,8 @@ import { useRouter } from "vue-router";
 import { setCurrentUser } from "@/store/me.js";
 
 interface LoginForm {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 export default defineComponent({

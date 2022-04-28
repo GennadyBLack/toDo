@@ -1,4 +1,5 @@
 <template>
+<div>
   <div
     class="
       main-wrapper
@@ -86,6 +87,7 @@
         @refetch="refetch"
       />
     </div>
+  </div>
   </div>
 </template>
 
