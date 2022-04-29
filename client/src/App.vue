@@ -6,9 +6,9 @@
         <router-view />
       </q-page-container>
     </q-layout>
-    <button @click="loh({ email: 'test2@test.ru', password: 'tester' })">
+    <!-- <button @click="loh({ email: 'test2@test.ru', password: 'tester' })">
       СУПЕРЛОХ
-    </button>
+    </button> -->
   </div>
 </template>
 <script>

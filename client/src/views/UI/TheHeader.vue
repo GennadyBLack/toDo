@@ -1,5 +1,6 @@
 <template>
   <q-header elevated class="bg-primary text-white">
+  
     <q-toolbar>
       <q-toolbar-title>
         <q-avatar class="q-mr-md">

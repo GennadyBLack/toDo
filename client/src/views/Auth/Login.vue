@@ -29,7 +29,6 @@ import { ref } from "vue";
 import { defineComponent } from "vue";
 import { gql } from "@apollo/client/core";
 import { useRouter } from "vue-router";
-import { setCurrentUser } from "@/store/me.js";
 
 interface LoginForm {
   email: string
@@ -62,10 +61,8 @@ export default defineComponent({
       let token = result?.data?.loginUser?.token;
       console.log(result?.data?.loginUser);
       localStorage.setItem("token", token);
-      await setCurrentUser();
-      await router.replace({
-        name: "TodoList",
-        params: { id: result?.data?.loginUser?.user?.id },
+      await router.push({
+        name: "TodoList"
       });
     });
     return { form, login };
