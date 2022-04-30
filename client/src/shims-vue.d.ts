@@ -6,3 +6,4 @@ declare module "*.vue" {
 }
 //solves Could not find a declaration file for module ts
 declare module "@/*.js";
+declare module "src/store/*.js";

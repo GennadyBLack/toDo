@@ -4,6 +4,7 @@ const { ApolloServer } = require("apollo-server-express");
 const app = express();
 const port = 4000;
 const authHelper = require("./helpers/auth");
+const chalk = require("chalk");
 
 const corsConfig = {
   credentials: true,
@@ -33,12 +34,12 @@ async function startServer() {
         let user = null;
 
         if(token) {
-          console.log(typeof token, "TOKEN")
+          console.log(chalk.bold.blue(typeof token, "TOKEN TYPE"))
           user = authHelper.checkToken(token);
         }
         req.user = user;
       } catch (error) {
-        console.log(error);
+        console.log(chalk.red(error, "ERROR FROM CONTEXT"));
       }
 
       return { models, req };

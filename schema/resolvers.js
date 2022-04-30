@@ -1,7 +1,9 @@
 //описание возможных запросов
+
 const bcrypt = require("bcrypt");
 const rounds = 10;
 const jwt = require("jsonwebtoken");
+const chalk = require("chalk");
 const { isConstructorDeclaration } = require("typescript");
 const tokenSecret = "my-token-secret";
 
@@ -24,7 +26,7 @@ const resolvers = {
       try {
         if (req.user) {
           const filter = args.filter ? args.filter : {};
-          console.log(filter, "FILTTTTTTEEER");
+          console.log(chalk.blue(filter, "FILTTTTTTEEER"));
           filter.where["userId"] = req?.user?.id ? req.user.id : null;
           let tasks = await models.Task.findAll({
             ...filter,
@@ -33,7 +35,9 @@ const resolvers = {
 
           return tasks;
         } else {
-          throw new Error("please verify");
+          // throw new Error("please verify");
+          console.log(chalk.red("getAllTasks: No User was Found"));
+          return [];
         }
       } catch (error) {
         console.log(error);
@@ -42,8 +46,12 @@ const resolvers = {
     // async getTasksByUser(root, __, { models, req }) {
     //   return models.Task.findAll({ where: { userId: req.user.id } });
     // },
-    async me(_, __, { models, req }) {
+    me(_, __, { models, req }) {
       try {
+        console.log(chalk.blue("me request"));
+        console.log(
+          chalk.yellow(req?.user || "no user/", "me request: req.user")
+        );
         if (req?.user) {
           return req.user;
         }
@@ -58,7 +66,7 @@ const resolvers = {
       return await new Promise((resolve, reject) => {
         bcrypt.hash(password, rounds, async (error, hash) => {
           if (error) {
-            console.log("error", error);
+            console.log(chalk.red("error bcrypt", error));
             throw new Error(error);
           } else {
             const newUser = await models.User.build({
@@ -82,11 +90,10 @@ const resolvers = {
       });
     },
     async loginUser(root, { email, password }, { models }) {
-      console.log("loginUser");
+      console.log(chalk.blue("went into loginUser"));
       let pre = await models.User.findOne({ where: { email: email } })
         .then(async (user) => {
-          console.log("Userlalala");
-          console.log(user.password, "uuuuseeeeeerheeree");
+          console.log(chalk.yellow(user.password, "uuuuseeeeeerheeree"));
           if (!user) throw new Error("no user with that email found");
           else {
             return await new Promise((resolve, reject) =>
@@ -103,7 +110,7 @@ const resolvers = {
         .catch((error) => {
           return error;
         });
-      console.log(pre, "preeeeeeee");
+      console.log(chalk.yellow(pre, "preeeeeeee"));
       return pre;
     },
     async createUser(root, { name, email, password }, { models }) {

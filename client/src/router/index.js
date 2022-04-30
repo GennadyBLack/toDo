@@ -70,20 +70,22 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   try {
-   
+
     // await setCurrentUser()
     if (to.meta.requiresAuth && isLoged.value) {
       next()
     } else if (to.meta.requiresAuth && !isLoged.value) {
-      console.log(setCurrentUser)
+      console.log(isLoged.value, "isLoged")
+      setCurrentUser
       next({ name: 'Login' })
+      // next()
     } else {
       next()
     }
   } catch (error) {
   console.log(error)
   }
- 
+
 })
 
 export default router;
