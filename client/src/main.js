@@ -35,7 +35,7 @@ const additiveLink = from([
   new HttpLink({ uri: "http://localhost:4000/graphql" }),
 ]);
 
-const apolloClient = new ApolloClient({
+export const apolloClient = new ApolloClient({
   link: additiveLink,
   cache: new InMemoryCache(),
 });

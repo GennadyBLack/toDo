@@ -1,13 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
-import {isLoged,setCurrentUser} from '../store/me'
 
 const routes = [
   {
     path: "/",
     name: "Home",
     component: Home,
-    meta: { requiresAuth: false }
+    meta: { requiresAuth: false },
   },
   {
     path: "/about",
@@ -17,7 +16,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
-      meta: { requiresAuth: false }
+    meta: { requiresAuth: false },
   },
   {
     path: "/test",
@@ -27,7 +26,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Test.vue"),
-      meta: { requiresAuth: false }
+    meta: { requiresAuth: false },
   },
   {
     path: "/register",
@@ -37,7 +36,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Auth/Register.vue"),
-      meta: { requiresAuth: false }
+    meta: { requiresAuth: false },
   },
   {
     path: "/login",
@@ -47,7 +46,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Auth/Login.vue"),
-      meta: { requiresAuth: false }
+    meta: { requiresAuth: false },
   },
   {
     path: "/todos/",
@@ -57,8 +56,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Todos/TodoList"),
-      meta: { requiresAuth: true }
-
+    meta: { requiresAuth: true },
   },
 ];
 
@@ -67,25 +65,19 @@ const router = createRouter({
   routes,
 });
 
-
 router.beforeEach(async (to, from, next) => {
   try {
-
-    // await setCurrentUser()
-    if (to.meta.requiresAuth && isLoged.value) {
-      next()
-    } else if (to.meta.requiresAuth && !isLoged.value) {
-      console.log(isLoged.value, "isLoged")
-      setCurrentUser
-      next({ name: 'Login' })
-      // next()
+    let isLoged = localStorage.getItem("token") !== "null";
+    if (to.meta.requiresAuth && isLoged) {
+      next();
+    } else if (to.meta.requiresAuth && !isLoged) {
+      next({ name: "Login" });
     } else {
-      next()
+      next();
     }
   } catch (error) {
-  console.log(error)
+    console.log(error);
   }
-
-})
+});
 
 export default router;

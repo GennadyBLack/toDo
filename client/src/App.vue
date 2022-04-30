@@ -11,30 +11,16 @@
     </button> -->
   </div>
 </template>
-<script>
+<script setup>
 import { setCurrentUser, profile } from "@/store/me";
-import allTodos from "@/store/todo";
-// import { LOGIN_USER } from "@/graphql/documents";
-import { useMutation } from "@vue/apollo-composable";
-import { gql } from "@apollo/client/core";
+import { onUpdated, onMounted } from "vue";
 import TheHeader from "./views/UI/TheHeader";
-export default {
-  components: { TheHeader },
-  setup() {
-    setCurrentUser();
-    const todos = allTodos();
-    const { mutate: loh } = useMutation(gql`
-      mutation Mutation($email: String!, $password: String!) {
-        loginUser(email: $email, password: $password) {
-          token
-        }
-      }
-    `);
-    // loh({
-    //   email: "test@test.ru",
-    //   password: "tester",
-    // });
-    return { profile, todos, loh };
-  },
-};
+
+onMounted(async () => {
+  await setCurrentUser();
+  console.log(profile);
+});
+onUpdated(() => {
+  console.log("i updated");
+});
 </script>

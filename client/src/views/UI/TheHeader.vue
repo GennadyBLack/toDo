@@ -1,6 +1,5 @@
 <template>
   <q-header elevated class="bg-primary text-white">
-  
     <q-toolbar>
       <q-toolbar-title>
         <q-avatar class="q-mr-md">
@@ -12,7 +11,7 @@
       </q-toolbar-title>
       <q-separator dark vertical />
       <q-btn
-        v-if="profile?.value?.me?.id"
+        v-if="isLoged"
         stretch
         flat
         label="My TodoList"
@@ -20,22 +19,16 @@
       ></q-btn>
       <q-separator dark vertical />
       <q-btn
-        v-if="!profile?.value?.me?.id"
+        v-if="!isLoged"
         stretch
         flat
         label="Register form"
         @click="router.replace({ name: 'Register' })"
       ></q-btn>
-      <q-btn
-        v-if="profile?.value?.me?.id"
-        stretch
-        flat
-        label="Logout"
-        @click="logout"
-      ></q-btn>
+      <q-btn v-if="isLoged" stretch flat label="Logout" @click="logout"></q-btn>
       <q-separator dark vertical />
       <q-btn
-        v-if="!profile?.value?.me?.id"
+        v-if="!isLoged"
         stretch
         flat
         label="Login form"
@@ -52,6 +45,7 @@
 
 <script>
 import { profile, logout } from "@/store/me";
+
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 export default {
@@ -59,11 +53,13 @@ export default {
   setup() {
     const router = useRouter();
     const $q = useQuasar();
+    let isLoged = localStorage.getItem("token") !== "null";
     return {
       router,
       profile,
       logout,
       $q,
+      isLoged,
     };
   },
 };
