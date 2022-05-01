@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
-
 const routes = [
   {
     path: "/",
@@ -65,19 +64,20 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach(async (to, from, next) => {
-  try {
-    let isLoged = localStorage.getItem("token") !== "null";
-    if (to.meta.requiresAuth && isLoged) {
-      next();
-    } else if (to.meta.requiresAuth && !isLoged) {
-      next({ name: "Login" });
-    } else {
-      next();
-    }
-  } catch (error) {
-    console.log(error);
-  }
-});
+// router.beforeEach(async (to, from, next) => {
+//   try {
+//     console.log(profile);
+//     let isLoged = localStorage.getItem("token") !== "null";
+//     if (to.meta.requiresAuth && isLoged) {
+//       next();
+//     } else if (to.meta.requiresAuth && !isLoged) {
+//       next({ name: "Login" });
+//     } else {
+//       next();
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 
 export default router;

@@ -12,15 +12,19 @@
   </div>
 </template>
 <script setup>
-import { setCurrentUser, profile } from "@/store/me";
-import { onUpdated, onMounted } from "vue";
+import { setCurrentUser, profile } from "./store/me";
+import { onMounted, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import TheHeader from "./views/UI/TheHeader";
-
-onMounted(async () => {
-  await setCurrentUser();
-  console.log(profile);
+const route = useRoute();
+const router = useRouter();
+watch(route, (value) => {
+  if (!profile?.value?.id && value?.meta?.requiresAuth) {
+    router.push({ name: "Login" });
+  }
 });
-onUpdated(() => {
-  console.log("i updated");
+onMounted(async () => {
+  console.log("here");
+  await setCurrentUser();
 });
 </script>
