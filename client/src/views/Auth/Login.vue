@@ -24,12 +24,12 @@
   </div>
 </template>
 <script lang="ts">
-import { useMutation, useQuery } from "@vue/apollo-composable";
+import { useMutation } from "@vue/apollo-composable";
 import { ref } from "vue";
 import { defineComponent } from "vue";
 import { gql } from "@apollo/client/core";
 import { useRouter } from "vue-router";
-// import { setCurrentUser } from "@/store/me.js";
+import { setCurrentUser, userToken } from "@/store/me.js";
 
 interface LoginForm {
   email: string;
@@ -40,7 +40,11 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     let form = ref<LoginForm>({ email: "", password: "" });
-    const { mutate: login, onDone } = useMutation(
+    const {
+      mutate: login,
+      onDone,
+      onError,
+    } = useMutation(
       gql`
         mutation loginUser($email: String!, $password: String!) {
           loginUser(email: $email, password: $password) {
@@ -57,23 +61,12 @@ export default defineComponent({
         },
       })
     );
-    const data = useQuery(gql`
-      query GetMe {
-        me {
-          email
-          name
-          id
-        }
-      }
-    `).result;
-    console.log(data, "DATA");
     onDone((result) => {
       try {
-        console.log("onDone");
-        let token = result?.data?.loginUser?.token;
-        console.log(result?.data?.loginUser);
-
-        localStorage.setItem("token", token);
+        let token: string = result?.data?.loginUser?.token;
+        console.log(result?.data?.loginUser, "getLoginUser");
+        userToken.value = token;
+        setCurrentUser();
         router.replace({
           name: "TodoList",
         });
@@ -81,7 +74,10 @@ export default defineComponent({
         throw new Error(e);
       }
     });
-    return { form, login, onDone };
+    onError((error) => {
+      console.error(error);
+    });
+    return { form, login, userToken };
   },
 });
 </script>

@@ -5,11 +5,12 @@
         <q-avatar class="q-mr-md">
           <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
         </q-avatar>
-        <span v-if="profile?.value?.me?.name"
-          >Hello, {{ profile?.value?.me?.name }}</span
-        >
+        <!--        <span v-if="profile?.value?.me?.name"-->
+        <!--          >Hello, {{ profile?.value?.me?.name }}</span-->
+        <!--        >-->
       </q-toolbar-title>
       <q-separator dark vertical />
+      {{ userToken }}
       <q-btn
         v-if="isLoged"
         stretch
@@ -44,7 +45,7 @@
 </template>
 
 <script>
-import { profile, logout } from "@/store/me";
+import { logout, userToken } from "@/store/me";
 
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
@@ -56,10 +57,10 @@ export default {
     let isLoged = localStorage.getItem("token") !== "null";
     return {
       router,
-      profile,
+      isLoged,
       logout,
       $q,
-      isLoged,
+      userToken,
     };
   },
 };

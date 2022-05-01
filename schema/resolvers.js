@@ -27,6 +27,7 @@ const resolvers = {
         if (req.user) {
           const filter = args.filter ? args.filter : {};
           console.log(chalk.blue(filter, "FILTTTTTTEEER"));
+
           filter.where["userId"] = req?.user?.id ? req.user.id : null;
           let tasks = await models.Task.findAll({
             ...filter,
@@ -46,7 +47,7 @@ const resolvers = {
     // async getTasksByUser(root, __, { models, req }) {
     //   return models.Task.findAll({ where: { userId: req.user.id } });
     // },
-    me(_, __, { models, req }) {
+    async me(_, __, { models, req }) {
       try {
         console.log(chalk.blue("me request"));
         console.log(
@@ -110,7 +111,7 @@ const resolvers = {
         .catch((error) => {
           return error;
         });
-      console.log(chalk.yellow(pre, "preeeeeeee"));
+      console.log(pre, "preeeeeeee");
       return pre;
     },
     async createUser(root, { name, email, password }, { models }) {

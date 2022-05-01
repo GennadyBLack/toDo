@@ -2,6 +2,7 @@ import App from "./App.vue";
 import router from "./router";
 import { Quasar } from "quasar";
 import quasarUserOptions from "./quasar-user-options";
+import {userToken} from "./store/me";
 
 ///old
 // import { createApp } from 'vue'
@@ -20,11 +21,13 @@ import {
 } from "@apollo/client/core";
 import { ApolloClients } from "@vue/apollo-composable";
 
-const token = localStorage.getItem("token");
 
 const additiveLink = from([
   new ApolloLink((operation, forward) => {
+    const token = userToken.value
+    console.log(token, "USERTOKEEN")
     operation.setContext(({ headers = {} }) => ({
+
       headers: {
         ...headers,
         authorization: token != null ? `Bearer ${token}` : null,
