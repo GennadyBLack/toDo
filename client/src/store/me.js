@@ -5,21 +5,23 @@ import {
   provideApolloClient,
   useResult,
 } from "@vue/apollo-composable";
-export const profile = ref({});
+export let profile = ref(null);
+export const log = ref(false);
 import { apolloClient } from "../main";
 
 export const setCurrentUser = async () => {
-  profile.value = null;
-  await provideApolloClient(apolloClient);
-  let { result } = await useQuery(ME_QUERY);
+  provideApolloClient(apolloClient);
+  let { result } = useQuery(ME_QUERY);
   let pre = useResult(result, null, (data) => data.me);
-  profile.value = pre;
+  profile = pre;
 };
+
 export const logout = () => {
   profile.value = null;
+  log.value = false;
   localStorage.setItem("token", null);
 };
 
-export const isLoged = computed(() => !!profile?.value?.value?.me?.id);
+export const isLoged = computed(() => profile.value.value.id);
 
 export const test = computed(() => profile?.value?.value?.me?.id);
