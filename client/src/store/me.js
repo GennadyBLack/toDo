@@ -6,10 +6,20 @@ export const log = ref(false);
 import { apolloClient } from "../main";
 
 export const setCurrentUser = async () => {
+  console.log("setUser");
   provideApolloClient(apolloClient);
-  let { result } = await useQuery(ME_QUERY);
-  profile.value = result.value;
-  console.log(profile?.value?.me, "profile");
+  await new Promise((resolve, reject) => {
+    let { onResult, onError } = useQuery(ME_QUERY);
+    onResult(result => {
+      profile.value = result?.data?.me;
+      resolve(true)
+    })
+    onError(error => {
+      reject(error)
+    })
+  });
+
+
 };
 
 export const logout = () => {
@@ -18,6 +28,8 @@ export const logout = () => {
   localStorage.setItem("token", null);
 };
 
-export const isLoged = computed(() => profile?.value?.me?.id);
+export const isLoged = computed(() =>
+!!profile?.value?.id
+);
 
 export const test = computed(() => profile?.value?.value?.me?.id);

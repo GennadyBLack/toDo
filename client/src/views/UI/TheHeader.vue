@@ -25,10 +25,9 @@
         label="Register form"
         @click="router.replace({ name: 'Register' })"
       ></q-btn>
-      <q-btn v-if="isLoged" stretch flat label="Logout" @click="logout"></q-btn>
+      <q-btn v-if="isLoged" stretch flat label="Logout" @click="logout();router.replace({ name: 'Login' })"></q-btn>
       <q-separator dark vertical />
       <q-btn
-        v-if="!isLoged"
         stretch
         flat
         label="Login form"
