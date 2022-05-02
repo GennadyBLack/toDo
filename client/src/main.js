@@ -2,7 +2,6 @@ import App from "./App.vue";
 import router from "./router";
 import { Quasar } from "quasar";
 import quasarUserOptions from "./quasar-user-options";
-import {userToken} from "./store/me";
 
 ///old
 // import { createApp } from 'vue'
@@ -24,15 +23,18 @@ import { ApolloClients } from "@vue/apollo-composable";
 
 const additiveLink = from([
   new ApolloLink((operation, forward) => {
-    const token = userToken.value
-    console.log(token, "USERTOKEEN")
-    operation.setContext(({ headers = {} }) => ({
 
-      headers: {
-        ...headers,
-        authorization: token != null ? `Bearer ${token}` : null,
-      },
-    }));
+
+    operation.setContext(({ headers = {} }) => {
+      const token = localStorage.getItem("token")
+      console.log(token, "USERTOKEEN")
+      return {
+        headers: {
+          ...headers,
+          authorization: token != null ? `Bearer ${token}` : null,
+        }
+      }
+    });
     return forward(operation); // Go to the next link in the chain. Similar to `next` in Express.js middleware.
   }),
   new HttpLink({ uri: "http://localhost:4000/graphql" }),

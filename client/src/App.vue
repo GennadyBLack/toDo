@@ -12,19 +12,22 @@
   </div>
 </template>
 <script setup>
-import { setCurrentUser, profile } from "./store/me";
-import { onMounted, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
+// import { useQuery } from "@vue/apollo-composable";
+// import { ME_QUERY } from "./graphql/documents";
+import { setCurrentUser } from "./store/me";
+import { onMounted } from "vue";
+// import { useRoute, useRouter } from "vue-router";
 import TheHeader from "./views/UI/TheHeader";
-const route = useRoute();
-const router = useRouter();
-watch(route, (value) => {
-  if (!profile?.value?.id && value?.meta?.requiresAuth) {
-    router.push({ name: "Login" });
-  }
-});
+// const route = useRoute();
+// const router = useRouter();
+// watch(route, (value) => {
+//   if (!isLoged && value?.meta?.requiresAuth) {
+//     router.push({ name: "Login" });
+//   }
+// });
 onMounted(async () => {
   console.log("here");
   await setCurrentUser();
 });
+// const { result } = useQuery(ME_QUERY);
 </script>

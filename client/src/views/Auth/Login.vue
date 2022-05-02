@@ -29,7 +29,7 @@ import { ref } from "vue";
 import { defineComponent } from "vue";
 import { gql } from "@apollo/client/core";
 import { useRouter } from "vue-router";
-import { setCurrentUser, userToken } from "@/store/me.js";
+import { setCurrentUser } from "@/store/me.js";
 
 interface LoginForm {
   email: string;
@@ -61,13 +61,13 @@ export default defineComponent({
         },
       })
     );
-    onDone((result) => {
+    onDone(async (result) => {
       try {
-        let token: string = result?.data?.loginUser?.token;
+        const token: string = result?.data?.loginUser?.token;
         console.log(result?.data?.loginUser, "getLoginUser");
-        userToken.value = token;
-        setCurrentUser();
-        router.replace({
+        localStorage.setItem("token", token);
+        await setCurrentUser();
+        await router.replace({
           name: "TodoList",
         });
       } catch (e) {
@@ -77,7 +77,7 @@ export default defineComponent({
     onError((error) => {
       console.error(error);
     });
-    return { form, login, userToken };
+    return { form, login };
   },
 });
 </script>

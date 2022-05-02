@@ -10,7 +10,6 @@
         <!--        >-->
       </q-toolbar-title>
       <q-separator dark vertical />
-      {{ userToken }}
       <q-btn
         v-if="isLoged"
         stretch
@@ -45,7 +44,7 @@
 </template>
 
 <script>
-import { logout, userToken } from "@/store/me";
+import { logout, isLoged } from "@/store/me";
 
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
@@ -54,13 +53,12 @@ export default {
   setup() {
     const router = useRouter();
     const $q = useQuasar();
-    let isLoged = localStorage.getItem("token") !== "null";
+    // let isLoged = localStorage.getItem("token") !== "null";
     return {
       router,
       isLoged,
       logout,
       $q,
-      userToken,
     };
   },
 };
