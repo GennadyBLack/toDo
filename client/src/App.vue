@@ -1,30 +1,54 @@
 <template>
   <div class="container">
     <q-layout view="hHh lpR fFf">
-      <the-header></the-header>
+      <the-header :user="user"></the-header>
       <q-page-container>
         <router-view />
       </q-page-container>
     </q-layout>
-    <!-- <button @click="loh({ email: 'test2@test.ru', password: 'tester' })">
-      СУПЕРЛОХ
-    </button> -->
   </div>
 </template>
-<script setup>
-import { setCurrentUser, profile } from "./store/me";
-import { onMounted, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
+<script>
+import { ME_QUERY } from "@/graphql/documents";
+import { setUser, user } from "./store/me";
 import TheHeader from "./views/UI/TheHeader";
-const route = useRoute();
-const router = useRouter();
-watch(route, (value) => {
-  if (!profile?.value?.id && value?.meta?.requiresAuth) {
-    router.push({ name: "Login" });
-  }
-});
-onMounted(async () => {
-  console.log("here");
-  await setCurrentUser();
-});
+import { useQuery } from "@vue/apollo-composable";
+export default {
+  components: { TheHeader },
+  data() {
+    return {
+      user: null,
+    };
+  },
+  methods: {
+    async fetchUser() {
+      let { result } = await useQuery(ME_QUERY);
+      this.user = await result;
+      setUser(result);
+      console.log(typeof user);
+    },
+  },
+  computed: {
+    route() {
+      return this.$route;
+    },
+    token() {
+      return localStorage.getItem("token") !== "null";
+    },
+  },
+  created() {
+    this.fetchUser();
+  },
+  watch: {
+    route() {
+      if (!this.user && this?.route?.meta?.requiresAuth) {
+        this.$router.push({ name: "Login" });
+      } else if (!this?.route?.meta?.requiresAuth) {
+        return;
+      } else {
+        return;
+      }
+    },
+  },
+};
 </script>

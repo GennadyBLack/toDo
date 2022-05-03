@@ -29,7 +29,9 @@ import { ref } from "vue";
 import { defineComponent } from "vue";
 import { gql } from "@apollo/client/core";
 import { useRouter } from "vue-router";
-// import { setCurrentUser } from "@/store/me.js";
+/* tslint:disable */ // @ts-ignore: Unreachable code error
+
+import { setUser } from "../../store/me.js";
 
 interface LoginForm {
   email: string;
@@ -67,12 +69,13 @@ export default defineComponent({
       }
     `).result;
     console.log(data, "DATA");
+
     onDone((result) => {
       try {
-        console.log("onDone");
+        console.log(result?.data?.loginUser.user, "ttt");
+        let pre = { me: { ...result?.data?.loginUser.user } };
+        setUser(pre);
         let token = result?.data?.loginUser?.token;
-        console.log(result?.data?.loginUser);
-
         localStorage.setItem("token", token);
         router.replace({
           name: "TodoList",

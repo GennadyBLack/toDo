@@ -66,7 +66,6 @@ const router = createRouter({
 
 // router.beforeEach(async (to, from, next) => {
 //   try {
-//     console.log(profile);
 //     let isLoged = localStorage.getItem("token") !== "null";
 //     if (to.meta.requiresAuth && isLoged) {
 //       next();
@@ -76,7 +75,6 @@ const router = createRouter({
 //       next();
 //     }
 //   } catch (error) {
-//     console.log(error);
 //   }
 // });
 

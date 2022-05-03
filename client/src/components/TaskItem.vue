@@ -79,7 +79,6 @@ const emit = defineEmits<{
 
 //хз как тут указать тип
 const task = toRef(props, "task");
-console.log(props);
 const $q = useQuasar();
 
 function update(payload: updateModel) {
@@ -99,7 +98,6 @@ const { mutate: deleteTask, onDone } = useMutation(
 );
 
 onDone(() => {
-  console.log(deleteTask);
   $q.notify("Task was successfuly deleted");
   emit("reset");
   refetch();

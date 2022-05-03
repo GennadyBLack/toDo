@@ -40,10 +40,8 @@ async function startServer() {
           console.log(jwt.verify(token, tokenSecret).data);
           //на выходе снова получаем объект с юзером
           user = jwt.verify(token, tokenSecret).data;
-          console.log(user, "USER");
         } else {
           user = null;
-          console.log(user, "USER");
         }
         // return req.user;
       } catch (error: unknown) {

@@ -5,9 +5,10 @@
         <q-avatar class="q-mr-md">
           <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
         </q-avatar>
-        <span v-if="profile?.value?.me?.name"
-          >Hello, {{ profile?.value?.me?.name }}</span
+        <span v-if="user?.value?.me?.name"
+          >Hello, {{ user?.value?.me?.name }}</span
         >
+        {{ isLoged }}
       </q-toolbar-title>
       <q-separator dark vertical />
       <q-btn
@@ -15,7 +16,7 @@
         stretch
         flat
         label="My TodoList"
-        @click="router.replace({ name: 'TodoList' })"
+        @click="this.$router.replace({ name: 'TodoList' })"
       ></q-btn>
       <q-separator dark vertical />
       <q-btn
@@ -23,9 +24,19 @@
         stretch
         flat
         label="Register form"
-        @click="router.replace({ name: 'Register' })"
+        @click="this.$router.replace({ name: 'Register' })"
       ></q-btn>
-      <q-btn v-if="isLoged" stretch flat label="Logout" @click="logout"></q-btn>
+      <q-btn
+        v-if="isLoged"
+        stretch
+        flat
+        label="Logout"
+        @click="
+          () => {
+            logout(), this.$router.push({ name: 'Login' });
+          }
+        "
+      ></q-btn>
       <q-separator dark vertical />
       <q-btn
         v-if="!isLoged"
@@ -33,7 +44,7 @@
         flat
         label="Login form"
         data-attr="login"
-        @click="router.replace({ name: 'Login' })"
+        @click="this.$router.replace({ name: 'Login' })"
       >
       </q-btn>
       <q-separator dark vertical />
@@ -44,22 +55,25 @@
 </template>
 
 <script>
-import { profile, logout } from "@/store/me";
-
+import { user, logout } from "@/store/me";
+import { computed } from "vue";
 import { useQuasar } from "quasar";
-import { useRouter } from "vue-router";
 export default {
   name: "TheHeader",
   setup() {
-    const router = useRouter();
     const $q = useQuasar();
-    let isLoged = localStorage.getItem("token") !== "null";
+    let isLoged = computed(() => {
+      let lo = user?.value?.me?.id; //
+      let fe = user?.value?.value?.me?.id;
+      return lo || fe ? true : false;
+    });
+    let test = user.value;
     return {
-      router,
-      profile,
+      isLoged,
       logout,
       $q,
-      isLoged,
+      user,
+      test,
     };
   },
 };
