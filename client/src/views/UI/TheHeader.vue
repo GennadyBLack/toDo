@@ -25,7 +25,13 @@
         label="Register form"
         @click="router.replace({ name: 'Register' })"
       ></q-btn>
-      <q-btn v-if="isLoged" stretch flat label="Logout" @click="logout();router.replace({ name: 'Login' })"></q-btn>
+      <q-btn
+        v-if="isLoged"
+        stretch
+        flat
+        label="Logout"
+        @click="fullLogout"
+      ></q-btn>
       <q-separator dark vertical />
       <q-btn
         stretch
@@ -47,16 +53,25 @@ import { logout, isLoged } from "@/store/me";
 
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
+
 export default {
   name: "TheHeader",
   setup() {
     const router = useRouter();
     const $q = useQuasar();
+
     // let isLoged = localStorage.getItem("token") !== "null";
+    function fullLogout() {
+      logout();
+      console.log("hi");
+      router.replace({ name: "Login" });
+    }
+
     return {
       router,
       isLoged,
       logout,
+      fullLogout,
       $q,
     };
   },

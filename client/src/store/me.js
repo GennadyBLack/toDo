@@ -9,17 +9,19 @@ export const setCurrentUser = async () => {
   console.log("setUser");
   provideApolloClient(apolloClient);
   await new Promise((resolve, reject) => {
-    let { onResult, onError } = useQuery(ME_QUERY);
-    onResult(result => {
+    let { onResult, onError } = useQuery(ME_QUERY, null, {
+      fetchPolicy: "no-cache",
+    });
+    onResult((result) => {
       profile.value = result?.data?.me;
-      resolve(true)
-    })
-    onError(error => {
-      reject(error)
-    })
+      console.log("result");
+      resolve(true);
+    });
+    onError((error) => {
+      console.log("error");
+      reject(error);
+    });
   });
-
-
 };
 
 export const logout = () => {
@@ -28,8 +30,6 @@ export const logout = () => {
   localStorage.setItem("token", null);
 };
 
-export const isLoged = computed(() =>
-!!profile?.value?.id
-);
+export const isLoged = computed(() => !!profile?.value?.id);
 
 export const test = computed(() => profile?.value?.value?.me?.id);
