@@ -7,10 +7,12 @@ describe("My First Test", () => {
   });
 });
 
-describe("Login form opens", () => {
+describe("Test Login and todo addition", () => {
   it("Visits the app root url", () => {
     //заходим на главную
     cy.visit("/");
+  });
+  it("Find Login button, click on it, input login info and login, check for redirect to todo list after the login, check for todo addition", () => {
     //находим кнопку логина, проверяем, что она содержит искомый текст
     cy.get("[data-attr=login]").contains("Login form").click();
     //находим форму логина, проверяем, что кол-во инпутов в ней === 2
@@ -22,5 +24,9 @@ describe("Login form opens", () => {
     cy.get("button[type=submit]").click();
     //урл должен содержать нужное нам значение
     cy.url().should("include", "/todos");
+    cy.get("input[name=addTodo]").type("teste");
+    cy.get("button[type=submit]").click();
+    cy.get("[data-hook=allTasks]").should("be.visible");
+    cy.get("[data-hook=allTasks] input[name=task]").should("have.length", 2);
   });
 });

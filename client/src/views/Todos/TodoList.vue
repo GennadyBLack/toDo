@@ -1,93 +1,84 @@
 <template>
-<div>
-  <div
-    class="
-      main-wrapper
-      q-stepper q-stepper--bordered q-stepper__flat
-      no-shadow
-      q-mx-auto q-mt-lg q-px-md q-py-md
-    "
-  >
-    <q-form class="q-gutter-md q-px-sm" ref="mainForm">
-      <div class="row items-center justify-between">
-        <q-input
-          class="col-12 text-subtitle1"
-          v-model="taskForm.title"
-          label="text To Do"
-          lazy-rules
-          :rules="[
-            (val) => (val && val.length > 0) || 'Пожалуйста, заполните поле',
-          ]"
-        >
-          <template v-slot:append>
-            <q-btn
-              round
-              size="md"
-              color="primary"
-              class="submit"
-              type="submit"
-              icon="add"
-              @click.prevent="createTask"
-              @reset="resetValid"
-            ></q-btn>
-          </template>
-        </q-input>
-        <!--        <q-checkbox v-model="taskForm.completed" label="completed"></q-checkbox>-->
+  <div>
+    <div
+      class="main-wrapper q-stepper q-stepper--bordered q-stepper__flat no-shadow q-mx-auto q-mt-lg q-px-md q-py-md"
+    >
+      <q-form class="q-gutter-md q-px-sm" ref="mainForm">
+        <div class="row items-center justify-between">
+          <q-input
+            name="addTodo"
+            class="col-12 text-subtitle1"
+            v-model="taskForm.title"
+            label="text To Do"
+            lazy-rules
+            :rules="[
+              (val) => (val && val.length > 0) || 'Пожалуйста, заполните поле',
+            ]"
+          >
+            <template v-slot:append>
+              <q-btn
+                round
+                size="md"
+                color="primary"
+                class="submit"
+                type="submit"
+                icon="add"
+                @click.prevent="createTask"
+                @reset="resetValid"
+              ></q-btn>
+            </template>
+          </q-input>
+          <!--        <q-checkbox v-model="taskForm.completed" label="completed"></q-checkbox>-->
 
-        <!-- <input v-model="taskTitle" type="text" /> -->
+          <!-- <input v-model="taskTitle" type="text" /> -->
 
-        <!--        <q-checkbox-->
-        <!--          class="col-2 q-mb-lg column"-->
-        <!--          size="lg"-->
-        <!--          color="teal"-->
-        <!--          v-model="taskForm.important"-->
-        <!--          label="Important"-->
-        <!--        ></q-checkbox>-->
+          <!--        <q-checkbox-->
+          <!--          class="col-2 q-mb-lg column"-->
+          <!--          size="lg"-->
+          <!--          color="teal"-->
+          <!--          v-model="taskForm.important"-->
+          <!--          label="Important"-->
+          <!--        ></q-checkbox>-->
 
-        <!--        <q-checkbox v-model="taskForm.completed" label="completed"></q-checkbox>-->
-      </div>
-    </q-form>
-  </div>
-  <!--    <q-separator spaced></q-separator>-->
-  <div
-    class="
-      main-wrapper
-      q-stepper q-stepper--bordered q-stepper__flat
-      no-shadow
-      q-mx-auto q-mt-lg q-px-md q-py-md
-    "
-  >
-    <q-btn-group class="q-mx-auto q-my-md" push>
-      <q-btn push label="All" icon="timeline" @click="setFilter({})" />
-      <q-btn
-        push
-        label="Important"
-        icon="visibility"
-        @click="setFilter({ important: true })"
-      />
-      <q-btn
-        push
-        label="Completed"
-        icon="update"
-        @click="setFilter({ completed: true })"
-      />
-      <q-btn
-        push
-        label="Incomplete"
-        icon="update"
-        @click="setFilter({ completed: false })"
-      />
-    </q-btn-group>
-    <div v-if="allTasks">
-      <TaskItem
-        v-for="task in allTasks"
-        :key="task.id"
-        :task="task"
-        @update="update"
-        @refetch="refetch"
-      />
+          <!--        <q-checkbox v-model="taskForm.completed" label="completed"></q-checkbox>-->
+        </div>
+      </q-form>
     </div>
-  </div>
+    <!--    <q-separator spaced></q-separator>-->
+    <div
+      class="main-wrapper q-stepper q-stepper--bordered q-stepper__flat no-shadow q-mx-auto q-mt-lg q-px-md q-py-md"
+    >
+      <q-btn-group class="q-mx-auto q-my-md" push>
+        <q-btn push label="All" icon="timeline" @click="setFilter({})" />
+        <q-btn
+          push
+          label="Important"
+          icon="visibility"
+          @click="setFilter({ important: true })"
+        />
+        <q-btn
+          push
+          label="Completed"
+          icon="update"
+          @click="setFilter({ completed: true })"
+        />
+        <q-btn
+          push
+          label="Incomplete"
+          icon="update"
+          @click="setFilter({ completed: false })"
+        />
+      </q-btn-group>
+      <div v-if="allTasks" data-hook="allTasks">
+        <TaskItem
+          v-for="task in allTasks"
+          :key="task.id"
+          :task="task"
+          @update="update"
+          @refetch="refetch"
+        />
+      </div>
+    </div>
   </div>
 </template>
 

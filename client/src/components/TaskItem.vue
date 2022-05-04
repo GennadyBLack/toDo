@@ -3,6 +3,7 @@
     <q-item-section>
       <q-input
         outlined
+        name="task"
         class="col-12 borderless q-mb-md text-h6"
         :model-value="task?.title"
         @change="update({ title: $event, id: task?.id })"
