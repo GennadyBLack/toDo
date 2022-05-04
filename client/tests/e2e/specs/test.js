@@ -20,5 +20,7 @@ describe("Login form opens", () => {
     cy.get("input[name=Password]").type(`tester`);
     //находим кнопку сабмита, нажимаем на неё
     cy.get("button[type=submit]").click();
+    //урл должен содержать нужное нам значение
+    cy.url().should("include", "/todos");
   });
 });
