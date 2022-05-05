@@ -35,6 +35,7 @@
             round
             color="transparent"
             icon="delete"
+            data-hook='deleteTask'
             @click.prevent="deleteTask({ id: task?.id })"
           ></q-btn>
         </template>

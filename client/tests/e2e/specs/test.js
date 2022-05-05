@@ -26,7 +26,29 @@ describe("Test Login and todo addition", () => {
     cy.url().should("include", "/todos");
     cy.get("input[name=addTodo]").type("teste");
     cy.get("button[type=submit]").click();
-    cy.get("[data-hook=allTasks]").should("be.visible");
-    cy.get("[data-hook=allTasks] input[name=task]").should("have.length", 2);
+
+    // cy.get("[data-hook=allTasks] input[name=task]").should("have.length", 2);
   });
+  it('add new task + chek length',() => {
+    cy.get("[data-hook=allTasks]").then(($list)=>{
+      let preLength =  $list[0].children.length
+      cy.get("input[name=addTodo]").type("teste").then(()=>{
+        let newV =  $list[0].children.length
+        expect(newV).to.eq(preLength)
+      })
+     })
+  })
+
+  it('delete task  + chek length',() => {
+    cy.get("[data-hook=allTasks]").then(($list)=>{
+      let preLength =  $list[0].children.length
+      cy.get("[data-hook='deleteTask']").then(($buttons)=>{
+        // let newV =  $list[0].children.length
+        // expect(newV).to.eq(preLength -1)
+      })
+     })
+  })
+
+
+
 });
