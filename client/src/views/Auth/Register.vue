@@ -29,6 +29,8 @@ import { useMutation } from "@vue/apollo-composable";
 import { ref } from "vue";
 import { defineComponent } from "vue";
 import { gql } from "@apollo/client/core";
+import { useQuasar } from "quasar";
+import {useRouter} from "vue-router"
 interface RegisterForm {
   name: string
   email: string
@@ -37,6 +39,8 @@ interface RegisterForm {
 
 export default defineComponent({
   setup() {
+    const $q = useQuasar();
+    const router = useRouter();
     let form = ref<RegisterForm>({ email: "", password: "", name: "" });
     const { mutate: register, onDone } = useMutation(
       gql`
@@ -56,6 +60,8 @@ export default defineComponent({
       let token = result?.data?.registerUser?.token;
       console.log(result?.data?.registerUser);
       localStorage.setItem("token", token);
+      $q.notify("You've registered successfully");
+      router.replace({name: "Login"})
     });
 
     return { form, register };
