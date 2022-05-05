@@ -49,14 +49,22 @@
       class="main-wrapper q-stepper q-stepper--bordered q-stepper__flat no-shadow q-mx-auto q-mt-lg q-px-md q-py-md"
     >
       <q-btn-group class="q-mx-auto q-my-md" push>
-        <q-btn push label="All" icon="timeline" @click="setFilter({})" />
         <q-btn
           push
+          label="All"
+          data-hook="all-filter"
+          icon="timeline"
+          @click="setFilter({})"
+        />
+        <q-btn
+          push
+          data-hook="important-filter"
           label="Important"
           icon="visibility"
           @click="setFilter({ important: true })"
         />
         <q-btn
+          data-hook="completed-filter"
           push
           label="Completed"
           icon="update"
@@ -64,6 +72,7 @@
         />
         <q-btn
           push
+          data-hook="incomplete-filter"
           label="Incomplete"
           icon="update"
           @click="setFilter({ completed: false })"

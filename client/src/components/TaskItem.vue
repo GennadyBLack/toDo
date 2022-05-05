@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-hook="task-wrap">
     <q-item-section>
       <q-input
         outlined
@@ -19,11 +19,13 @@
             :model-value="task?.completed"
             checked-icon="task_alt"
             size="lg"
+            data-hook="completed"
             unchecked-icon="task_alt_border"
             @update:model-value="update({ completed: $event, id: task?.id })"
           ></q-checkbox>
           <q-checkbox
             class="q-mr-sm"
+            data-hook="important"
             :model-value="task?.important"
             checked-icon="star"
             size="lg"
@@ -35,7 +37,7 @@
             round
             color="transparent"
             icon="delete"
-            data-hook='deleteTask'
+            data-hook="deleteTask"
             @click.prevent="deleteTask({ id: task?.id })"
           ></q-btn>
         </template>

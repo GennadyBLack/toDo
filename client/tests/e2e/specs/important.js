@@ -13,10 +13,26 @@ describe("Login and Update", () => {
     //урл должен содержать нужное нам значение
     cy.url().should("include", "/todos");
     //берём все элементы инпут с именем task
-    cy.get("input[name=task]").then(($list) => {
+    cy.get("[data-hook=important]").then(($list) => {
+      cy.get($list[0]).click();
+    });
+    cy.get("[data-hook=task-wrap] label").then(($list) => {
       //берём первый инпут из списка элементов, очищаем инпут, вписываем значение
-      cy.get($list[0]).clear().type("Task has been edited").blur();
-      cy.get($list[0]).should("have.value", "Task has been edited");
+      cy.get($list[0]).should("have.class", "bg-orange-4");
+    });
+    cy.get("[data-hook=important]").then(($list) => {
+      cy.get($list[0]).click();
+    });
+
+    cy.get("[data-hook=completed]").then(($list) => {
+      cy.get($list[0]).click();
+    });
+    cy.get("[data-hook=task-wrap] label").then(($list) => {
+      //берём первый инпут из списка элементов, очищаем инпут, вписываем значение
+      cy.get($list[0]).should("have.class", "bg-green-4");
+    });
+    cy.get("[data-hook=completed]").then(($list) => {
+      cy.get($list[0]).click();
     });
   });
 });
