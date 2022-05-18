@@ -8,6 +8,8 @@ import { apolloClient } from "../main";
 export const setCurrentUser = async () => {
   console.log("setUser");
   provideApolloClient(apolloClient);
+
+  //короче была проблема с нав гардом и setUser. Это из-за того, что код не ждал выполнения useQuery. Закинул его в промис и вроде заработало.
   await new Promise((resolve, reject) => {
     let { onResult, onError } = useQuery(ME_QUERY, null, {
       fetchPolicy: "no-cache",
